@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>卫汶冲的笔记</title>
+    <title>Wenchong Blog</title>
     <link>http://wenchong-wei.github.io/</link>
-    <description>Recent content on 卫汶冲的笔记</description>
+    <description>Recent content on Wenchong Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Wed, 07 Jul 2021 16:44:42 +0800</lastBuildDate><atom:link href="http://wenchong-wei.github.io/index.xml" rel="self" type="application/rss+xml" />
@@ -17,7 +17,7 @@
     </item>
     
     <item>
-      <title></title>
+      <title>redis基础知识</title>
       <link>http://wenchong-wei.github.io/post/redis/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
