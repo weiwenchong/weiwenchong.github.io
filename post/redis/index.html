@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="en-us">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,8 +10,8 @@
     <meta property="og:type" content="article">
 
     
-    <meta property="og:image" content="http://wenchong-wei.github.io//">
-    <meta property="twitter:image" content="http://wenchong-wei.github.io//" />
+    <meta property="og:image" content="http://wenchong-wei.github.io//static/img/智子.jpeg">
+    <meta property="twitter:image" content="http://wenchong-wei.github.io//static/img/智子.jpeg" />
     
 
     
@@ -21,9 +21,9 @@
     
 
     
-    <meta name="description" content="">
-    <meta property="og:description" content="" />
-    <meta property="twitter:description" content="" />
+    <meta name="description" content="卫汶冲, 幼年期程序猿, 喜欢折腾自己 | 这里是 卫汶冲 的博客, 请不吝指教.">
+    <meta property="og:description" content="卫汶冲, 幼年期程序猿, 喜欢折腾自己 | 这里是 卫汶冲 的博客, 请不吝指教." />
+    <meta property="twitter:description" content="卫汶冲, 幼年期程序猿, 喜欢折腾自己 | 这里是 卫汶冲 的博客, 请不吝指教." />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>redis基础知识-</title>
+    <title>redis基础知识-卫汶冲的博客 | Weiwenchong Blog</title>
 
     <link rel="canonical" href="/post/redis/">
 
@@ -143,7 +143,7 @@
 
 <style type="text/css">
     header.intro-header {
-        background-image: url('/')
+        background-image: url('/static/img/%e6%99%ba%e5%ad%90.jpeg')
     }
 </style>
 
@@ -162,7 +162,7 @@
                         
                             Posted by 
                             
-                                    Wenchong Blog
+                                wenchong
                              
                             on 
                             Monday, January 1, 0001
@@ -199,25 +199,30 @@
     <li><a href="#写在前面">写在前面</a></li>
     <li><a href="#数据类型">数据类型</a></li>
     <li><a href="#命令">命令</a></li>
-    <li><a href="#过期时间">过期时间</a>
+    <li><a href="#过期时间">过期时间</a></li>
+    <li><a href="#持久化">持久化</a>
       <ul>
-        <li></li>
+        <li><a href="#rdb持久化">RDB持久化</a></li>
+        <li><a href="#aof持久化">AOF持久化</a></li>
+        <li><a href="#aof重写">AOF重写</a></li>
       </ul>
     </li>
     <li><a href="#事件">事件</a>
       <ul>
-        <li></li>
+        <li><a href="#时间事件">时间事件</a></li>
       </ul>
     </li>
     <li><a href="#主从复制">主从复制</a>
       <ul>
-        <li></li>
+        <li><a href="#旧版复制功能sync">旧版复制功能：SYNC</a></li>
+        <li><a href="#新版复制功能psync">新版复制功能：PSYNC</a></li>
+        <li><a href="#增量复制偏移量">增量复制偏移量</a></li>
       </ul>
     </li>
     <li><a href="#哨兵">哨兵</a></li>
     <li><a href="#事务">事务</a>
       <ul>
-        <li></li>
+        <li><a href="#watch命令">WATCH命令</a></li>
       </ul>
     </li>
   </ul>
@@ -267,7 +272,7 @@ redis3.2之前,数据少使用ziplist,数据多使用linkedlist,3.2后全部使�
 <p><em>todo 增加数据量划分</em></p>
 <p>数据结构图
 
-  <img src="img/%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84.png" alt="">
+  <img src="../../static/img/redis%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84.png" alt="">
 
 </p>
 <h2 id="命令">命令</h2>
@@ -279,9 +284,9 @@ redis3.2之前,数据少使用ziplist,数据多使用linkedlist,3.2后全部使�
 <li>最多到毫秒.</li>
 <li>使用惰性删除和定期删除两种策略,定期删除是每次随机取一些键进行检查,惰性删除是用到这个键时才会去删除这个键.</li>
 </ul>
-<p>##持久化
-面试必考划重点</p>
-<h5 id="rdb持久化">RDB持久化</h5>
+<h2 id="持久化">持久化</h2>
+<p>面试必考划重点</p>
+<h3 id="rdb持久化">RDB持久化</h3>
 <ul>
 <li>将数据库状态保存为压缩的二进制文件.</li>
 <li>RDB持久化的优先级低于AOF持久化,优先使用AOF来进行还原,只有在AOF关闭时,才会使用RDB持久化.</li>
@@ -289,20 +294,20 @@ redis3.2之前,数据少使用ziplist,数据多使用linkedlist,3.2后全部使�
 <li>BGSAVE是后台保存,fork一个线程出来,只有fork的时候阻塞主线程,子线程执行SAVE的过程不影响主线程继续执行命令.</li>
 <li>redis自带SAVE自动保存,满足条件之一就可以：900秒一次修改,300s十次修改等. 这个条件可以通过修改redis的conf文件来更改.</li>
 </ul>
-<h5 id="aof持久化">AOF持久化</h5>
+<h3 id="aof持久化">AOF持久化</h3>
 <ul>
 <li>AOF是将写redis的命令记录下来,类似于mysql的binlog,而RDB是将redis整个的键值对记录下来.</li>
 <li>AOF记录的格式是纯文本格式,将redis写命令的<strong>请求</strong>记录下来.</li>
 <li>使用AOF恢复redis时,会使用一个没有网络连接的伪客户端来向redis服务端发送AOF记录里的写入请求.</li>
 </ul>
-<h5 id="aof重写">AOF重写</h5>
+<h3 id="aof重写">AOF重写</h3>
 <ul>
 <li>当redis写入命令过多时,必然导致AOF文件的膨胀,AOF重写是将记录里一个键的多条写入命令变为一条.</li>
 <li>将多条命令变为一条的过程是,直接读取库里的键值,写入AOF中.</li>
 <li>重写过程在子进程中进行,会复制一份AOF文件来进行重写,同时在父进程中将写入的命令同时写入到AOF缓冲区和AOF重写缓冲区,在子进程完成重写后,会在父进程中阻塞其他命令,将AOF重写缓冲区的数据写入到新AOF文件中,再用新的AOF替换老的AOF.</li>
 </ul>
 <h2 id="事件">事件</h2>
-<h5 id="时间事件">时间事件</h5>
+<h3 id="时间事件">时间事件</h3>
 <ul>
 <li>redis将所有的时间事件放在一个无序链表中,链表是越晚插入的在后面,不会根据执行时间去排序,所以每次时间执行器运行时会遍历整个链表,将运行时间在当前时间之前的执行.</li>
 <li>时间事件执行器每隔100ms执行一次,遇到冲突的文件事件会优先执行文件事件.
@@ -310,21 +315,21 @@ redis3.2之前,数据少使用ziplist,数据多使用linkedlist,3.2后全部使�
 <li>时间事件并不能做到精准到毫秒去运行.</li>
 </ul>
 <h2 id="主从复制">主从复制</h2>
-<h5 id="旧版复制功能sync">旧版复制功能：SYNC</h5>
+<h3 id="旧版复制功能sync">旧版复制功能：SYNC</h3>
 <ol>
 <li>从服务端发送SYNC命令.</li>
 <li>主服务器执行BGSAVE,在后台生成RDB文件,并在缓冲区记录生成RDB文件期间服务器的写操作.</li>
 <li>主服务器将RDB文件发送给从服务器,从服务器载入RDB,更新到主服务器开始执行RDB操作时的状态.</li>
 <li>主服务器将缓冲区的写命令发给从服务器,更新到主服务器当前状态.</li>
 </ol>
-<h5 id="新版复制功能psync">新版复制功能：PSYNC</h5>
+<h3 id="新版复制功能psync">新版复制功能：PSYNC</h3>
 <p>分为完整重同步和部分重同步</p>
 <ol>
 <li>完整重同步等同于旧版复制功能,用于初次复制.</li>
 <li>部分重同步用于从服务器断线重连,如果条件允许,主服务器将断开期间的写命令发送给从服务器去执行一遍,完成同步.</li>
 </ol>
 <p><strong>redis同步的策略是优先执行增量同步</strong></p>
-<h5 id="增量复制偏移量">增量复制偏移量</h5>
+<h3 id="增量复制偏移量">增量复制偏移量</h3>
 <ol>
 <li>redis的主从服务器都会保存复制偏移量,即主服务器同步给从服务器的数据量.</li>
 <li>偏移量可以用于校对主从服务同步状态,如果某次同步从服务器丢失了同步信息,下次请求同步会从丢失的偏移量之前开始.</li>
@@ -344,7 +349,7 @@ redis3.2之前,数据少使用ziplist,数据多使用linkedlist,3.2后全部使�
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">MULTI  
 set ...  
 EXEC
-</code></pre></div><h5 id="watch命令">WATCH命令</h5>
+</code></pre></div><h3 id="watch命令">WATCH命令</h3>
 <p>是一个乐观锁,监视数据库键,当一个事务改变这些键时,服务器会直接拒绝</p>
 <ol>
 <li>
