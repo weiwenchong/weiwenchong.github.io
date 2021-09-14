@@ -3,31 +3,15 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://wenchong-wei.github.io/tags/cache/</loc>
+    <loc>http://weiwenchong.github.io/categories/</loc>
   </url>
   
   <url>
-    <loc>http://wenchong-wei.github.io/categories/</loc>
+    <loc>http://weiwenchong.github.io/tags/</loc>
   </url>
   
   <url>
-    <loc>http://wenchong-wei.github.io/post/</loc>
-  </url>
-  
-  <url>
-    <loc>http://wenchong-wei.github.io/tags/redis/</loc>
-  </url>
-  
-  <url>
-    <loc>http://wenchong-wei.github.io/post/redis/</loc>
-  </url>
-  
-  <url>
-    <loc>http://wenchong-wei.github.io/tags/</loc>
-  </url>
-  
-  <url>
-    <loc>http://wenchong-wei.github.io/</loc>
+    <loc>http://weiwenchong.github.io/</loc>
   </url>
   
 </urlset>
