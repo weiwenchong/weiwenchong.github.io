@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="卫汶冲的笔记">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="http://wenchong-wei.github.io//">
+    <meta property="twitter:image" content="http://wenchong-wei.github.io//" />
+    
+
+    
+    <meta name="title" content="" />
+    <meta property="og:title" content="" />
+    <meta property="twitter:title" content="" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title></title>
+
+    <link rel="canonical" href="/post/redis/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">卫汶冲的笔记</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                        
+                    
+                    
+		    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                    </div>
+                    <h1></h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                    卫汶冲的笔记
+                             
+                            on 
+                            Monday, January 1, 0001
+                            
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#写在前面">写在前面</a></li>
+    <li><a href="#数据类型">数据类型</a></li>
+    <li><a href="#命令">命令</a></li>
+    <li><a href="#过期时间">过期时间</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#事件">事件</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#主从复制">主从复制</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#哨兵">哨兵</a></li>
+    <li><a href="#事务">事务</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                
+                <h2 id="写在前面">写在前面</h2>
+<p>推荐书籍: 《redis设计与实现》<br>
+推荐博客: <a href="https://www.cnblogs.com/hunternet/tag/Redis/">https://www.cnblogs.com/hunternet/tag/Redis/</a> (其实就是复述了一遍书,可以用这个博客实现对书的检索功能)</p>
+<h2 id="数据类型">数据类型</h2>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>底层实现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>列表</td>
+<td>(linkedlist ziplist)/quicklist</td>
+</tr>
+<tr>
+<td>哈希</td>
+<td>ziplist hashtable</td>
+</tr>
+<tr>
+<td>set</td>
+<td>intset hashtable</td>
+</tr>
+<tr>
+<td>sortset</td>
+<td>ziplist skiplist&amp;hashtable</td>
+</tr>
+</tbody>
+</table>
+<p>其中quicklist是linkedlist和ziplist的结合体,每个节点是一个ziplist,节约指针所占的空间和内存碎片化问题,在redis3.2版本以后,列表的实现方式使用quicklist代替了原本的linkedlist和ziplist.</p>
+<ol>
+<li>列表<br>
+redis3.2之前,数据少使用ziplist,数据多使用linkedlist,3.2后全部使用quicklist.</li>
+<li>哈希
+数据少使用ziplist,数据多使用hashtable.</li>
+<li>set
+数据少并且是int使用intset,数据多使用hashtable.</li>
+<li>sortset
+数据少使用ziplist,数据多使用skiplist&amp;hashtable.</li>
+</ol>
+<p><em>todo 增加数据量划分</em></p>
+<p>数据结构图
+
+  <img src="../static/img/redis%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84.png" alt="">
+
+</p>
+<h2 id="命令">命令</h2>
+<p>命令太多了,就不写了,会用就行 ^_^</p>
+<h2 id="过期时间">过期时间</h2>
+<p>很多命令设置时没有过期时间,可以用<strong>expire</strong>来追加设置.</p>
+<ul>
+<li>使用expires字典保存过期时间.</li>
+<li>最多到毫秒.</li>
+<li>使用惰性删除和定期删除两种策略,定期删除是每次随机取一些键进行检查,惰性删除是用到这个键时才会去删除这个键.</li>
+</ul>
+<p>##持久化
+面试必考划重点</p>
+<h5 id="rdb持久化">RDB持久化</h5>
+<ul>
+<li>将数据库状态保存为压缩的二进制文件.</li>
+<li>RDB持久化的优先级低于AOF持久化,优先使用AOF来进行还原,只有在AOF关闭时,才会使用RDB持久化.</li>
+<li>SAVE命令,前台存储,会阻塞所有的redis命令,进行保存.</li>
+<li>BGSAVE是后台保存,fork一个线程出来,只有fork的时候阻塞主线程,子线程执行SAVE的过程不影响主线程继续执行命令.</li>
+<li>redis自带SAVE自动保存,满足条件之一就可以：900秒一次修改,300s十次修改等. 这个条件可以通过修改redis的conf文件来更改.</li>
+</ul>
+<h5 id="aof持久化">AOF持久化</h5>
+<ul>
+<li>AOF是将写redis的命令记录下来,类似于mysql的binlog,而RDB是将redis整个的键值对记录下来.</li>
+<li>AOF记录的格式是纯文本格式,将redis写命令的<strong>请求</strong>记录下来.</li>
+<li>使用AOF恢复redis时,会使用一个没有网络连接的伪客户端来向redis服务端发送AOF记录里的写入请求.</li>
+</ul>
+<h5 id="aof重写">AOF重写</h5>
+<ul>
+<li>当redis写入命令过多时,必然导致AOF文件的膨胀,AOF重写是将记录里一个键的多条写入命令变为一条.</li>
+<li>将多条命令变为一条的过程是,直接读取库里的键值,写入AOF中.</li>
+<li>重写过程在子进程中进行,会复制一份AOF文件来进行重写,同时在父进程中将写入的命令同时写入到AOF缓冲区和AOF重写缓冲区,在子进程完成重写后,会在父进程中阻塞其他命令,将AOF重写缓冲区的数据写入到新AOF文件中,再用新的AOF替换老的AOF.</li>
+</ul>
+<h2 id="事件">事件</h2>
+<h5 id="时间事件">时间事件</h5>
+<ul>
+<li>redis将所有的时间事件放在一个无序链表中,链表是越晚插入的在后面,不会根据执行时间去排序,所以每次时间执行器运行时会遍历整个链表,将运行时间在当前时间之前的执行.</li>
+<li>时间事件执行器每隔100ms执行一次,遇到冲突的文件事件会优先执行文件事件.
+（这个100ms可以修改）</li>
+<li>时间事件并不能做到精准到毫秒去运行.</li>
+</ul>
+<h2 id="主从复制">主从复制</h2>
+<h5 id="旧版复制功能sync">旧版复制功能：SYNC</h5>
+<ol>
+<li>从服务端发送SYNC命令.</li>
+<li>主服务器执行BGSAVE,在后台生成RDB文件,并在缓冲区记录生成RDB文件期间服务器的写操作.</li>
+<li>主服务器将RDB文件发送给从服务器,从服务器载入RDB,更新到主服务器开始执行RDB操作时的状态.</li>
+<li>主服务器将缓冲区的写命令发给从服务器,更新到主服务器当前状态.</li>
+</ol>
+<h5 id="新版复制功能psync">新版复制功能：PSYNC</h5>
+<p>分为完整重同步和部分重同步</p>
+<ol>
+<li>完整重同步等同于旧版复制功能,用于初次复制.</li>
+<li>部分重同步用于从服务器断线重连,如果条件允许,主服务器将断开期间的写命令发送给从服务器去执行一遍,完成同步.</li>
+</ol>
+<p><strong>redis同步的策略是优先执行增量同步</strong></p>
+<h5 id="增量复制偏移量">增量复制偏移量</h5>
+<ol>
+<li>redis的主从服务器都会保存复制偏移量,即主服务器同步给从服务器的数据量.</li>
+<li>偏移量可以用于校对主从服务同步状态,如果某次同步从服务器丢失了同步信息,下次请求同步会从丢失的偏移量之前开始.</li>
+<li>redis使用复制积压缓冲区来记录已发送的同步命令,当复制偏移量不一致时,主服务器先从缓冲区去找,找到了就将从服务器偏移量后的同步命令全部给从服务器.</li>
+<li>如果丢失命令已经不在缓冲区里,就执行全量重同步.</li>
+<li>复制积压缓冲区使用<strong>固定长度先进先出队列</strong>实现.</li>
+</ol>
+<h2 id="哨兵">哨兵</h2>
+<ul>
+<li>一个或多个sentinel实例组成sentinel系统可以监视任意多个redis主服务器以及这些主服务器下属的从服务器,当一个主服务器下线,会将一个从服务器晋升为主服务器.</li>
+<li>当下线的原主服务器重新上线时,sentinel会将其置为从服务器.</li>
+<li>sentinel是由普通的redis服务器转变状态而来,换言之,sentinel是一个redis服务器.</li>
+<li>检测是否在线是sentinel每秒一次向所有实例（主从服务器,其他sentinel）发送ping命令.</li>
+<li>sentinel会每十秒一次向主服务器发送INFO命令,通过INFO的回复来获取主服务器的信息.</li>
+</ul>
+<h2 id="事务">事务</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">MULTI  
+set ...  
+EXEC
+</code></pre></div><h5 id="watch命令">WATCH命令</h5>
+<p>是一个乐观锁,监视数据库键,当一个事务改变这些键时,服务器会直接拒绝</p>
+<ol>
+<li>
+<p>原子性<br>
+在批量命令入队时,如果服务器发现有个命令错误,则一条命令也不会执行.
+而在命令全部入队后,如果执行命令出错,依然会执行完全部命令,不支持事务回滚.</p>
+</li>
+<li>
+<p>一致性<br>
+一致是指数据符合数据库本身的定义和要求,没有非法和无效的数据.<br>
+入队错误: redis2.6.5之前的版本,即使命令在入队过程中发生了错误,事务提交后依然会执行,只是不执行出错的命令(如get 后无参数).<br>
+在2.6.5之后的版本,如果入队时命令出错,会直接不执行事务中的所有命令.<br>
+执行错误: 如get 一个 list, redis会不执行这条命令.<br>
+服务器停机: 无论是否开启持久化都会保持一致性.</p>
+</li>
+<li>
+<p>隔离性<br>
+redis使用单线程运行, 事务都是串行, 所以可以保证隔离性.</p>
+</li>
+<li>
+<p>持久性<br>
+仅在AOF持久化开启, 模式为always时, 即程序在执行完命令后会立即执行sync, 可以实现AOF持久化.</p>
+</li>
+</ol>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/post/first/" data-toggle="tooltip" data-placement="top" title="First">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + " wenchong " + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 卫汶冲的笔记 2021
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>
