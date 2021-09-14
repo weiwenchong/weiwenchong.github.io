@@ -10,8 +10,8 @@
     <meta property="og:type" content="article">
 
     
-    <meta property="og:image" content="http://wenchong-wei.github.io//static/img/智子.jpeg">
-    <meta property="twitter:image" content="http://wenchong-wei.github.io//static/img/智子.jpeg" />
+    <meta property="og:image" content="http://wenchong-wei.github.io//img/智子.jpeg">
+    <meta property="twitter:image" content="http://wenchong-wei.github.io//img/智子.jpeg" />
     
 
     
@@ -143,7 +143,7 @@
 
 <style type="text/css">
     header.intro-header {
-        background-image: url('/static/img/%e6%99%ba%e5%ad%90.jpeg')
+        background-image: url('/img/%e6%99%ba%e5%ad%90.jpeg')
     }
 </style>
 
@@ -154,6 +154,14 @@
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="post-heading">
                     <div class="tags">
+                        
+                        <a class="tag" href="/tags/cache" title="cache">
+                            cache
+                        </a>
+                        
+                        <a class="tag" href="/tags/redis" title="redis">
+                            redis
+                        </a>
                         
                     </div>
                     <h1>redis基础知识</h1>
@@ -272,7 +280,7 @@ redis3.2之前,数据少使用ziplist,数据多使用linkedlist,3.2后全部使�
 <p><em>todo 增加数据量划分</em></p>
 <p>数据结构图
 
-  <img src="../../static/img/redis%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84.png" alt="">
+  <img src="img/redis%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84.png" alt="">
 
 </p>
 <h2 id="命令">命令</h2>
@@ -285,7 +293,6 @@ redis3.2之前,数据少使用ziplist,数据多使用linkedlist,3.2后全部使�
 <li>使用惰性删除和定期删除两种策略,定期删除是每次随机取一些键进行检查,惰性删除是用到这个键时才会去删除这个键.</li>
 </ul>
 <h2 id="持久化">持久化</h2>
-<p>面试必考划重点</p>
 <h3 id="rdb持久化">RDB持久化</h3>
 <ul>
 <li>将数据库状态保存为压缩的二进制文件.</li>
@@ -381,11 +388,6 @@ redis使用单线程运行, 事务都是串行, 所以可以保证隔离性.</p>
                 <hr>
                 <ul class="pager">
                     
-                    
-                    <li class="next">
-                        <a href="/post/first/" data-toggle="tooltip" data-placement="top" title="First">Next
-                            Post &rarr;</a>
-                    </li>
                     
                 </ul>
 

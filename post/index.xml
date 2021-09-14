@@ -5,17 +5,7 @@
     <link>http://wenchong-wei.github.io/post/</link>
     <description>Recent content in Posts on Wenchong Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Wed, 07 Jul 2021 16:44:42 +0800</lastBuildDate><atom:link href="http://wenchong-wei.github.io/post/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>First</title>
-      <link>http://wenchong-wei.github.io/post/first/</link>
-      <pubDate>Wed, 07 Jul 2021 16:44:42 +0800</pubDate>
-      
-      <guid>http://wenchong-wei.github.io/post/first/</guid>
-      <description></description>
-    </item>
-    
+    <language>en-us</language><atom:link href="http://wenchong-wei.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>redis基础知识</title>
       <link>http://wenchong-wei.github.io/post/redis/</link>
@@ -29,8 +19,7 @@
 redis3.2之前,数据少使用ziplist,数据多使用linkedlist,3.2后全部使用quicklist. 哈希 数据少使用ziplist,数据多使用hashtable. set 数据少并且是int使用intset,数据多使用hashtable. sortset 数据少使用ziplist,数据多使用skiplist&amp;amp;hashtable.  todo 增加数据量划分
 数据结构图 命令 命令太多了,就不写了,会用就行 ^_^
 过期时间 很多命令设置时没有过期时间,可以用expire来追加设置.
- 使用expires字典保存过期时间. 最多到毫秒. 使用惰性删除和定期删除两种策略,定期删除是每次随机取一些键进行检查,惰性删除是用到这个键时才会去删除这个键.  持久化 面试必考划重点
-RDB持久化  将数据库状态保存为压缩的二进制文件. RDB持久化的优先级低于AOF持久化,优先使用AOF来进行还原,只有在AOF关闭时,才会使用RDB持久化. SAVE命令,前台存储,会阻塞所有的redis命令,进行保存. BGSAVE是后台保存,fork一个线程出来,只有fork的时候阻塞主线程,子线程执行SAVE的过程不影响主线程继续执行命令. redis自带SAVE自动保存,满足条件之一就可以：900秒一次修改,300s十次修改等. 这个条件可以通过修改redis的conf文件来更改.</description>
+ 使用expires字典保存过期时间. 最多到毫秒. 使用惰性删除和定期删除两种策略,定期删除是每次随机取一些键进行检查,惰性删除是用到这个键时才会去删除这个键.  持久化 RDB持久化  将数据库状态保存为压缩的二进制文件. RDB持久化的优先级低于AOF持久化,优先使用AOF来进行还原,只有在AOF关闭时,才会使用RDB持久化. SAVE命令,前台存储,会阻塞所有的redis命令,进行保存. BGSAVE是后台保存,fork一个线程出来,只有fork的时候阻塞主线程,子线程执行SAVE的过程不影响主线程继续执行命令. redis自带SAVE自动保存,满足条件之一就可以：900秒一次修改,300s十次修改等. 这个条件可以通过修改redis的conf文件来更改.  AOF持久化  AOF是将写redis的命令记录下来,类似于mysql的binlog,而RDB是将redis整个的键值对记录下来.</description>
     </item>
     
   </channel>
