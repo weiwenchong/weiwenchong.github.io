@@ -169,7 +169,7 @@
                         
                     </div>
                     <h1>redis基础知识</h1>
-                    <h2 class="subheading"></h2>
+                    <h2 class="subheading">《redis设计与实现》阅读笔记</h2>
                     <span class="meta">
                         
                             Posted by 
@@ -208,33 +208,17 @@
                 </header>
                 <nav id="TableOfContents">
   <ul>
-    <li><a href="#写在前面">写在前面</a></li>
-    <li><a href="#数据类型">数据类型</a></li>
-    <li><a href="#命令">命令</a></li>
-    <li><a href="#过期时间">过期时间</a></li>
-    <li><a href="#持久化">持久化</a>
+    <li>
       <ul>
-        <li><a href="#rdb持久化">RDB持久化</a></li>
-        <li><a href="#aof持久化">AOF持久化</a></li>
-        <li><a href="#aof重写">AOF重写</a></li>
-      </ul>
-    </li>
-    <li><a href="#事件">事件</a>
-      <ul>
-        <li><a href="#时间事件">时间事件</a></li>
-      </ul>
-    </li>
-    <li><a href="#主从复制">主从复制</a>
-      <ul>
-        <li><a href="#旧版复制功能sync">旧版复制功能：SYNC</a></li>
-        <li><a href="#新版复制功能psync">新版复制功能：PSYNC</a></li>
-        <li><a href="#增量复制偏移量">增量复制偏移量</a></li>
-      </ul>
-    </li>
-    <li><a href="#哨兵">哨兵</a></li>
-    <li><a href="#事务">事务</a>
-      <ul>
-        <li><a href="#watch命令">WATCH命令</a></li>
+        <li><a href="#写在前面">写在前面</a></li>
+        <li><a href="#数据类型">数据类型</a></li>
+        <li><a href="#命令">命令</a></li>
+        <li><a href="#过期时间">过期时间</a></li>
+        <li><a href="#持久化">持久化</a></li>
+        <li><a href="#事件">事件</a></li>
+        <li><a href="#主从复制">主从复制</a></li>
+        <li><a href="#哨兵">哨兵</a></li>
+        <li><a href="#事务">事务</a></li>
       </ul>
     </li>
   </ul>
@@ -357,8 +341,8 @@ redis3.2之前,数据少使用ziplist,数据多使用linkedlist,3.2后全部使�
 <li>sentinel会每十秒一次向主服务器发送INFO命令,通过INFO的回复来获取主服务器的信息.</li>
 </ul>
 <h2 id="事务">事务</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">MULTI  
-set ...  
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">MULTI  
+<span style="color:#8be9fd;font-style:italic">set</span> ...  
 EXEC
 </code></pre></div><h3 id="watch命令">WATCH命令</h3>
 <p>是一个乐观锁,监视数据库键,当一个事务改变这些键时,服务器会直接拒绝</p>
@@ -411,7 +395,7 @@ redis使用单线程运行, 事务都是串行, 所以可以保证隔离性.</p>
             return;
         }
         var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + " wenchong " + '.disqus.com/embed.js';
+        s.src = '//' + "wenchong" + '.disqus.com/embed.js';
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
     })();
@@ -445,6 +429,14 @@ redis使用单线程运行, 事务都是串行, 所以可以保证隔离性.</p>
                 
 
                 
+                
+                <section>
+                    <hr>
+                    <h5>FRIENDS</h5>
+                    <ul class="list-inline">
+                        
+                    </ul>
+                </section>
                 
             </div>
         </div>
