@@ -2,16 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>cache on Wenchong Blog</title>
-    <link>http://wenchong-wei.github.io/tags/cache/</link>
+    <link>http://weiwenchong.github.io/tags/cache/</link>
     <description>Recent content in cache on Wenchong Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="http://wenchong-wei.github.io/tags/cache/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <lastBuildDate>Tue, 14 Sep 2021 20:50:00 +0000</lastBuildDate><atom:link href="http://weiwenchong.github.io/tags/cache/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>redis基础知识</title>
-      <link>http://wenchong-wei.github.io/post/redis/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <link>http://weiwenchong.github.io/post/redis/</link>
+      <pubDate>Tue, 14 Sep 2021 20:50:00 +0000</pubDate>
       
-      <guid>http://wenchong-wei.github.io/post/redis/</guid>
+      <guid>http://weiwenchong.github.io/post/redis/</guid>
       <description>写在前面 推荐书籍: 《redis设计与实现》
 推荐博客: https://www.cnblogs.com/hunternet/tag/Redis/ (其实就是复述了一遍书,可以用这个博客实现对书的检索功能)
 数据类型    数据类型 底层实现     列表 (linkedlist ziplist)/quicklist   哈希 ziplist hashtable   set intset hashtable   sortset ziplist skiplist&amp;amp;hashtable    其中quicklist是linkedlist和ziplist的结合体,每个节点是一个ziplist,节约指针所占的空间和内存碎片化问题,在redis3.2版本以后,列表的实现方式使用quicklist代替了原本的linkedlist和ziplist.

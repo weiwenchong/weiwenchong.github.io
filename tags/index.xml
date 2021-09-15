@@ -5,6 +5,25 @@
     <link>http://weiwenchong.github.io/tags/</link>
     <description>Recent content in Tags on Wenchong Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="http://weiwenchong.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <lastBuildDate>Tue, 14 Sep 2021 20:50:00 +0000</lastBuildDate><atom:link href="http://weiwenchong.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>cache</title>
+      <link>http://weiwenchong.github.io/tags/cache/</link>
+      <pubDate>Tue, 14 Sep 2021 20:50:00 +0000</pubDate>
+      
+      <guid>http://weiwenchong.github.io/tags/cache/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>redis</title>
+      <link>http://weiwenchong.github.io/tags/redis/</link>
+      <pubDate>Tue, 14 Sep 2021 20:50:00 +0000</pubDate>
+      
+      <guid>http://weiwenchong.github.io/tags/redis/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>
