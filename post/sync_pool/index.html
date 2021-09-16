@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Wenchong Blog">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="http://weiwenchong.github.io//img/智子.jpeg">
+    <meta property="twitter:image" content="http://weiwenchong.github.io//img/智子.jpeg" />
+    
+
+    
+    <meta name="title" content="golang基础库 sync.Pool" />
+    <meta property="og:title" content="golang基础库 sync.Pool" />
+    <meta property="twitter:title" content="golang基础库 sync.Pool" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="卫汶冲的博客">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>golang基础库 sync.Pool-卫汶冲的博客 | Weiwenchong Blog</title>
+
+    <link rel="canonical" href="/post/sync_pool/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wenchong Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                        
+                    
+                    
+		    
+
+                    
+		    <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/%e6%99%ba%e5%ad%90.jpeg')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/golang" title="golang">
+                            golang
+                        </a>
+                        
+                        <a class="tag" href="/tags/pool" title="pool">
+                            pool
+                        </a>
+                        
+                    </div>
+                    <h1>golang基础库 sync.Pool</h1>
+                    <h2 class="subheading">sync.Pool源码浅析</h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                wenchong
+                             
+                            on 
+                            Tuesday, September 14, 2021
+                            
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#golang-基础库syncpool">golang 基础库sync.Pool</a>
+      <ul>
+        <li><a href="#使用姿势">使用姿势</a></li>
+        <li><a href="#源码剖析">源码剖析</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                
+                <h1 id="golang-基础库syncpool">golang 基础库sync.Pool</h1>
+<h2 id="使用姿势">使用姿势</h2>
+<h3 id="认识下syncpool">认识下sync.Pool</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#8be9fd;font-style:italic">type</span> Pool <span style="color:#8be9fd;font-style:italic">struct</span> {
+  <span style="color:#ff79c6">...</span>
+  New <span style="color:#8be9fd;font-style:italic">func</span>() <span style="color:#8be9fd;font-style:italic">interface</span>{}
+}
+
+<span style="color:#8be9fd;font-style:italic">func</span> (p <span style="color:#ff79c6">*</span>Pool) <span style="color:#50fa7b">Put</span>(x <span style="color:#8be9fd;font-style:italic">interface</span>{}) {
+  <span style="color:#ff79c6">...</span>
+}
+
+<span style="color:#8be9fd;font-style:italic">func</span> (p <span style="color:#ff79c6">*</span>Pool) <span style="color:#50fa7b">Get</span>() <span style="color:#8be9fd;font-style:italic">interface</span>{} {
+  <span style="color:#ff79c6">...</span>
+}
+</code></pre></div><p>sync.Pool暴露了以上三个方法,分别为构造pool时传入新建对象方法,获取pool中对象,将对象放回pool中.<br>
+主要特点:</p>
+<ol>
+<li>一个放内存的池子.</li>
+<li>重复使用临时对象.</li>
+<li>减少GC压力.</li>
+<li>并发安全.</li>
+</ol>
+<h3 id="使用例子">使用例子</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#8be9fd;font-style:italic">var</span> createdNum <span style="color:#8be9fd">int64</span> <span style="color:#6272a4">// 记录创建对象次数
+</span><span style="color:#6272a4"></span>
+<span style="color:#8be9fd;font-style:italic">type</span> Node <span style="color:#8be9fd;font-style:italic">struct</span> {
+	Value <span style="color:#8be9fd">int64</span>
+}
+
+<span style="color:#8be9fd;font-style:italic">func</span> <span style="color:#50fa7b">NewNode</span>() <span style="color:#8be9fd;font-style:italic">interface</span>{} {
+	atomic.<span style="color:#50fa7b">AddInt64</span>(<span style="color:#ff79c6">&amp;</span>createdNum, <span style="color:#bd93f9">1</span>) <span style="color:#6272a4">// 保证new方法的并发安全
+</span><span style="color:#6272a4"></span>	<span style="color:#ff79c6">return</span> <span style="color:#ff79c6">&amp;</span>Node{}
+}
+
+<span style="color:#8be9fd;font-style:italic">func</span> <span style="color:#50fa7b">Handle</span>() {
+	nodePool <span style="color:#ff79c6">:=</span> sync.Pool{
+		New: NewNode, <span style="color:#6272a4">// 传入新建对象方法
+</span><span style="color:#6272a4"></span>	}
+
+	workers <span style="color:#ff79c6">:=</span> <span style="color:#bd93f9">1024</span> <span style="color:#6272a4">// 设置并发数
+</span><span style="color:#6272a4"></span>	wg <span style="color:#ff79c6">:=</span> sync.WaitGroup{}
+
+	<span style="color:#ff79c6">for</span> i <span style="color:#ff79c6">:=</span> <span style="color:#bd93f9">0</span>; i &lt; workers; i<span style="color:#ff79c6">++</span> {
+		wg.<span style="color:#50fa7b">Add</span>(<span style="color:#bd93f9">1</span>)
+		<span style="color:#ff79c6">go</span> <span style="color:#8be9fd;font-style:italic">func</span>() {
+			<span style="color:#ff79c6">defer</span> wg.<span style="color:#50fa7b">Done</span>()
+
+			node <span style="color:#ff79c6">:=</span> nodePool.<span style="color:#50fa7b">Get</span>()   <span style="color:#6272a4">// 从pool中获取对象
+</span><span style="color:#6272a4"></span>			<span style="color:#ff79c6">defer</span> nodePool.<span style="color:#50fa7b">Put</span>(node) <span style="color:#6272a4">// 将对象放回pool
+</span><span style="color:#6272a4"></span>
+			<span style="color:#50fa7b">Task</span>(node.(<span style="color:#ff79c6">*</span>Node))
+		}()
+	}
+	wg.<span style="color:#50fa7b">Wait</span>()
+	fmt.<span style="color:#50fa7b">Println</span>(createdNum) <span style="color:#6272a4">// 输出新建对象申请内存次数
+</span><span style="color:#6272a4"></span>}
+
+<span style="color:#8be9fd;font-style:italic">func</span> <span style="color:#50fa7b">Task</span>(node <span style="color:#ff79c6">*</span>Node) {
+}
+</code></pre></div><p>使用注意:</p>
+<ol>
+<li>无法得知Get获取的对象是新的还是旧的.</li>
+<li>pool不会对回收的内存进行重置,获取到需要自己memset.</li>
+<li>pool中的对象随时可能被释放,完全由runtime控制.</li>
+<li>pool是并发安全的,New方法会被并发调用,需要使用者保证New方法的并发安全.</li>
+<li>Get/Put与new/free用法类似,但Get获取到对象后可以不使用Put放回,Put放回的也不一定必须是Get获取的元素.</li>
+</ol>
+<h2 id="源码剖析">源码剖析</h2>
+<h3 id="数据结构">数据结构</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#8be9fd;font-style:italic">type</span> Pool <span style="color:#8be9fd;font-style:italic">struct</span> {
+	noCopy noCopy
+
+	local     unsafe.Pointer <span style="color:#6272a4">// 1.
+</span><span style="color:#6272a4"></span>	localSize <span style="color:#8be9fd">uintptr</span>
+
+	victim     unsafe.Pointer  <span style="color:#6272a4">// 2.
+</span><span style="color:#6272a4"></span>	victimSize <span style="color:#8be9fd">uintptr</span>
+
+	New <span style="color:#8be9fd;font-style:italic">func</span>() <span style="color:#8be9fd;font-style:italic">interface</span>{}
+}
+
+<span style="color:#8be9fd;font-style:italic">type</span> poolLocal <span style="color:#8be9fd;font-style:italic">struct</span> { <span style="color:#6272a4">// 3.
+</span><span style="color:#6272a4"></span>	poolLocalInternal
+	pad [<span style="color:#bd93f9">128</span> <span style="color:#ff79c6">-</span> unsafe.<span style="color:#50fa7b">Sizeof</span>(poolLocalInternal{})<span style="color:#ff79c6">%</span><span style="color:#bd93f9">128</span>]<span style="color:#8be9fd">byte</span> <span style="color:#6272a4">// 4.
+</span><span style="color:#6272a4"></span>}
+
+<span style="color:#8be9fd;font-style:italic">type</span> poolLocalInternal <span style="color:#8be9fd;font-style:italic">struct</span> { <span style="color:#6272a4">// 5.
+</span><span style="color:#6272a4"></span>	private <span style="color:#8be9fd;font-style:italic">interface</span>{}
+	shared  poolChain  
+}
+
+<span style="color:#8be9fd;font-style:italic">type</span> poolChain <span style="color:#8be9fd;font-style:italic">struct</span> { <span style="color:#6272a4">// 6.
+</span><span style="color:#6272a4"></span>	head <span style="color:#ff79c6">*</span>poolChainElt
+	tail <span style="color:#ff79c6">*</span>poolChainElt
+}
+
+<span style="color:#8be9fd;font-style:italic">type</span> poolDequeue <span style="color:#8be9fd;font-style:italic">struct</span> { <span style="color:#6272a4">// 7.
+</span><span style="color:#6272a4"></span>	headTail <span style="color:#8be9fd">uint64</span>
+	vals []eface
+}
+</code></pre></div><ol>
+<li>local和localSize实现了一个数组, 数量与GMP模型中P的数量相等, 元素类型为poolLocal, 分别对应每个P.</li>
+<li>victim与local结构一致, 在gc开始前会将local里的元素拷贝到victim里, 目的是减少GC后的性能抖动.</li>
+<li>每个P会对应一个该结构.</li>
+<li>内存填充到128字节对齐, 避免false sharing.</li>
+<li>整个结构体都是当前P独有的, 但private是只有当前P可以使用,
+shared是别的P也可以使用.</li>
+<li>存储缓存元素的双向链表, 类似于ringbuffer.</li>
+<li>缓存元素存储在vals里.</li>
+</ol>
+<p>数据结构图
+
+  <img src="sync_pool%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84.png" alt="">
+
+</p>
+<h3 id="主要流程">主要流程</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#8be9fd;font-style:italic">func</span> (p <span style="color:#ff79c6">*</span>Pool) <span style="color:#50fa7b">Get</span>() <span style="color:#8be9fd;font-style:italic">interface</span>{} {
+	l, pid <span style="color:#ff79c6">:=</span> p.<span style="color:#50fa7b">pin</span>() <span style="color:#6272a4">// 1.
+</span><span style="color:#6272a4"></span>	x <span style="color:#ff79c6">:=</span> l.private    <span style="color:#6272a4">// 2.
+</span><span style="color:#6272a4"></span>	l.private = <span style="color:#ff79c6">nil</span>
+
+	<span style="color:#ff79c6">if</span> x <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">nil</span> {
+		x, _ = l.shared.<span style="color:#50fa7b">popHead</span>() <span style="color:#6272a4">// 3.
+</span><span style="color:#6272a4"></span>		<span style="color:#ff79c6">if</span> x <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">nil</span> {
+			x = p.<span style="color:#50fa7b">getSlow</span>(pid) <span style="color:#6272a4">// 4.
+</span><span style="color:#6272a4"></span>		}
+	}
+
+	<span style="color:#50fa7b">runtime_procUnpin</span>() <span style="color:#6272a4">// 5.
+</span><span style="color:#6272a4"></span>	<span style="color:#ff79c6">if</span> x <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">nil</span> <span style="color:#ff79c6">&amp;&amp;</span> p.New <span style="color:#ff79c6">!=</span> <span style="color:#ff79c6">nil</span> {
+		x = p.<span style="color:#50fa7b">New</span>() <span style="color:#6272a4">// 6.
+</span><span style="color:#6272a4"></span>	}
+
+	<span style="color:#ff79c6">return</span> x
+}
+
+<span style="color:#8be9fd;font-style:italic">func</span> (p <span style="color:#ff79c6">*</span>Pool) <span style="color:#50fa7b">Put</span>(x <span style="color:#8be9fd;font-style:italic">interface</span>{}) {
+	<span style="color:#ff79c6">if</span> x <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">nil</span> {
+		<span style="color:#ff79c6">return</span>
+	}
+
+	l, _ <span style="color:#ff79c6">:=</span> p.<span style="color:#50fa7b">pin</span>() <span style="color:#6272a4">// 7.
+</span><span style="color:#6272a4"></span>	<span style="color:#ff79c6">if</span> l.private <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">nil</span> {
+		l.private = x <span style="color:#6272a4">// 8.
+</span><span style="color:#6272a4"></span>		x = <span style="color:#ff79c6">nil</span>
+	}
+
+	<span style="color:#ff79c6">if</span> x <span style="color:#ff79c6">!=</span> <span style="color:#ff79c6">nil</span> {
+		l.shared.<span style="color:#50fa7b">pushHead</span>(x) <span style="color:#6272a4">// 9.
+</span><span style="color:#6272a4"></span>	}
+	<span style="color:#50fa7b">runtime_procUnpin</span>()
+}
+</code></pre></div><ol>
+<li>将G锁定在当前M, 使M不能被抢占.</li>
+<li>第一次尝试从local的private里获取缓存元素.</li>
+<li>第二次尝试从local的shared里获取缓存元素.</li>
+<li>第三次尝试先从别的P的share里获取, 再从victim里获取.</li>
+<li>将G-M绑定解除.</li>
+<li>如果前三次都没有找到可用的缓存元素, 就创建一个.</li>
+<li>G-M锁定.</li>
+<li>第一次尝试放入当前P的private里.</li>
+<li>第二次放入当前P的shared双向链表里.</li>
+</ol>
+<h3 id="get优先级">Get优先级</h3>
+<ol>
+<li>当前P的local.private.</li>
+<li>当前P的local.shared.</li>
+<li>其他P的local.shared.</li>
+<li>victim.</li>
+<li>重新构造一个.</li>
+</ol>
+<h3 id="put优先级">Put优先级</h3>
+<ol>
+<li>当前P的local.private.</li>
+<li>当前P的local.shared.</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#8be9fd;font-style:italic">func</span> (p <span style="color:#ff79c6">*</span>Pool) <span style="color:#50fa7b">pinSlow</span>() (<span style="color:#ff79c6">*</span>poolLocal, <span style="color:#8be9fd">int</span>) { <span style="color:#6272a4">// 1.
+</span><span style="color:#6272a4"></span>	<span style="color:#6272a4">// Retry under the mutex.
+</span><span style="color:#6272a4"></span>	<span style="color:#6272a4">// Can not lock the mutex while pinned.
+</span><span style="color:#6272a4"></span>	<span style="color:#50fa7b">runtime_procUnpin</span>()
+	allPoolsMu.<span style="color:#50fa7b">Lock</span>()
+	<span style="color:#ff79c6">defer</span> allPoolsMu.<span style="color:#50fa7b">Unlock</span>()
+	pid <span style="color:#ff79c6">:=</span> <span style="color:#50fa7b">runtime_procPin</span>()
+	<span style="color:#6272a4">// poolCleanup won&#39;t be called while we are pinned.
+</span><span style="color:#6272a4"></span>	s <span style="color:#ff79c6">:=</span> p.localSize
+	l <span style="color:#ff79c6">:=</span> p.local
+	<span style="color:#ff79c6">if</span> <span style="color:#8be9fd;font-style:italic">uintptr</span>(pid) &lt; s {
+		<span style="color:#ff79c6">return</span> <span style="color:#50fa7b">indexLocal</span>(l, pid), pid
+	}
+	<span style="color:#ff79c6">if</span> p.local <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">nil</span> {
+		allPools = <span style="color:#8be9fd;font-style:italic">append</span>(allPools, p) <span style="color:#6272a4">// 2.
+</span><span style="color:#6272a4"></span>	}
+	<span style="color:#6272a4">// If GOMAXPROCS changes between GCs, we re-allocate the array and lose the old one.
+</span><span style="color:#6272a4"></span>	size <span style="color:#ff79c6">:=</span> runtime.<span style="color:#50fa7b">GOMAXPROCS</span>(<span style="color:#bd93f9">0</span>) <span style="color:#6272a4">// 3.
+</span><span style="color:#6272a4"></span>	local <span style="color:#ff79c6">:=</span> <span style="color:#8be9fd;font-style:italic">make</span>([]poolLocal, size)
+	atomic.<span style="color:#50fa7b">StorePointer</span>(<span style="color:#ff79c6">&amp;</span>p.local, unsafe.<span style="color:#50fa7b">Pointer</span>(<span style="color:#ff79c6">&amp;</span>local[<span style="color:#bd93f9">0</span>])) <span style="color:#6272a4">// store-release
+</span><span style="color:#6272a4"></span>	atomic.<span style="color:#50fa7b">StoreUintptr</span>(<span style="color:#ff79c6">&amp;</span>p.localSize, <span style="color:#8be9fd;font-style:italic">uintptr</span>(size))         <span style="color:#6272a4">// store-release
+</span><span style="color:#6272a4"></span>	<span style="color:#ff79c6">return</span> <span style="color:#ff79c6">&amp;</span>local[pid], pid
+}
+
+<span style="color:#8be9fd;font-style:italic">func</span> <span style="color:#50fa7b">poolCleanup</span>() { <span style="color:#6272a4">// 4.
+</span><span style="color:#6272a4"></span>	<span style="color:#ff79c6">for</span> _, p <span style="color:#ff79c6">:=</span> <span style="color:#ff79c6">range</span> oldPools {
+		p.victim = <span style="color:#ff79c6">nil</span>
+		p.victimSize = <span style="color:#bd93f9">0</span> <span style="color:#6272a4">// 5.
+</span><span style="color:#6272a4"></span>	}
+
+	<span style="color:#6272a4">// Move primary cache to victim cache.
+</span><span style="color:#6272a4"></span>	<span style="color:#ff79c6">for</span> _, p <span style="color:#ff79c6">:=</span> <span style="color:#ff79c6">range</span> allPools {
+		p.victim = p.local <span style="color:#6272a4">// 6.
+</span><span style="color:#6272a4"></span>		p.victimSize = p.localSize
+		p.local = <span style="color:#ff79c6">nil</span>
+		p.localSize = <span style="color:#bd93f9">0</span>
+	}
+
+	<span style="color:#6272a4">// The pools with non-empty primary caches now have non-empty
+</span><span style="color:#6272a4"></span>	<span style="color:#6272a4">// victim caches and no pools have primary caches.
+</span><span style="color:#6272a4"></span>	oldPools, allPools = allPools, <span style="color:#ff79c6">nil</span> <span style="color:#6272a4">// 7.
+</span><span style="color:#6272a4"></span>}
+</code></pre></div><ol>
+<li>每个P第一次调用pool的Get时会走进这个函数.</li>
+<li>第一次调用, 将pool注册进allPools数组.</li>
+<li>local数组的大小定为P的数量, 默认情况下为cpu个数.</li>
+<li>在GC前调用.</li>
+<li>清理oldPools的victim.</li>
+<li>将local拷贝到victim, 后面put的元素会全部进入local里, get会优先local, 防止GC引起抖动.
+<ul>
+<li>victim机制将回收动作由一次变为两次,每次清理都是上次cache的对象才会被真正清理掉,当前缓存的对象只是移到了回收站,仍然可以被使用.</li>
+<li>从victim里取出的元素,被使用后会放入local里.</li>
+</ul>
+</li>
+<li>清理oldPools.</li>
+</ol>
+<p>主要流程图
+
+  <img src="sync_pool%e4%b8%bb%e8%a6%81%e6%b5%81%e7%a8%8b.png" alt="">
+
+</p>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/redis/" data-toggle="tooltip" data-placement="top" title="redis基础知识">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "wenchong" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>FRIENDS</h5>
+                    <ul class="list-inline">
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="Wenchong Blog" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+                   
+                    
+
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/weiwenchong">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Wenchong Blog 2021
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>
