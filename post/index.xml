@@ -25,5 +25,14 @@
       <description>写在前面 推荐书籍: 《redis设计与实现》 推荐博客: https://www.cnblogs.com/hunternet/tag/Redis/ (其实就是复述了一遍书,可以用这个博客实现对书的检索功能) 数据类型 数据类型 底层实现 列表</description>
     </item>
     
+    <item>
+      <title>网络基础知识</title>
+      <link>http://weiwenchong.github.io/post/net/</link>
+      <pubDate>Sat, 10 Apr 2021 20:50:00 +0000</pubDate>
+      
+      <guid>http://weiwenchong.github.io/post/net/</guid>
+      <description>TCP OSI七层模型 应用层:为应用程序提供网络服务. 表示层:数据格式转换、数据压缩和数据加密. 会话层:建立、断开和维护通信链接. 传输层:为上层协</description>
+    </item>
+    
   </channel>
 </rss>

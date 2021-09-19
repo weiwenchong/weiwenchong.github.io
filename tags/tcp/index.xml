@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>TCP on Wenchong Blog</title>
+    <link>http://weiwenchong.github.io/tags/tcp/</link>
+    <description>Recent content in TCP on Wenchong Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 10 Apr 2021 20:50:00 +0000</lastBuildDate><atom:link href="http://weiwenchong.github.io/tags/tcp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>网络基础知识</title>
+      <link>http://weiwenchong.github.io/post/net/</link>
+      <pubDate>Sat, 10 Apr 2021 20:50:00 +0000</pubDate>
+      
+      <guid>http://weiwenchong.github.io/post/net/</guid>
+      <description>TCP OSI七层模型 应用层:为应用程序提供网络服务. 表示层:数据格式转换、数据压缩和数据加密. 会话层:建立、断开和维护通信链接. 传输层:为上层协</description>
+    </item>
+    
+  </channel>
+</rss>
