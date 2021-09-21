@@ -26,6 +26,15 @@
     </item>
     
     <item>
+      <title>kafka</title>
+      <link>http://weiwenchong.github.io/post/kafka/</link>
+      <pubDate>Sun, 15 Aug 2021 20:50:00 +0000</pubDate>
+      
+      <guid>http://weiwenchong.github.io/post/kafka/</guid>
+      <description>kafka 功能 解耦. 可恢复性. 系统的一部分组件失效,例如一个处理消息的进程挂掉,不会影响整个系统,加入队列的消息仍可以在系统恢复后被处理. 缓冲. 控制</description>
+    </item>
+    
+    <item>
       <title>网络基础知识</title>
       <link>http://weiwenchong.github.io/post/net/</link>
       <pubDate>Sat, 10 Apr 2021 20:50:00 +0000</pubDate>

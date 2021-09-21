@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>kafka on Wenchong Blog</title>
+    <link>http://weiwenchong.github.io/tags/kafka/</link>
+    <description>Recent content in kafka on Wenchong Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 15 Aug 2021 20:50:00 +0000</lastBuildDate><atom:link href="http://weiwenchong.github.io/tags/kafka/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>kafka</title>
+      <link>http://weiwenchong.github.io/post/kafka/</link>
+      <pubDate>Sun, 15 Aug 2021 20:50:00 +0000</pubDate>
+      
+      <guid>http://weiwenchong.github.io/post/kafka/</guid>
+      <description>kafka 功能 解耦. 可恢复性. 系统的一部分组件失效,例如一个处理消息的进程挂掉,不会影响整个系统,加入队列的消息仍可以在系统恢复后被处理. 缓冲. 控制</description>
+    </item>
+    
+  </channel>
+</rss>
