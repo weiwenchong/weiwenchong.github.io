@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="redis" />
-    <meta property="og:title" content="redis" />
-    <meta property="twitter:title" content="redis" />
+    <meta name="title" content="Mysql回表" />
+    <meta property="og:title" content="Mysql回表" />
+    <meta property="twitter:title" content="Mysql回表" />
     
 
     
@@ -34,9 +34,9 @@
     <meta name="keyword"  content="卫汶冲的博客">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>redis-卫汶冲的博客 | Weiwenchong Blog</title>
+    <title>Mysql回表-卫汶冲的博客 | Weiwenchong Blog</title>
 
-    <link rel="canonical" href="/tags/redis/">
+    <link rel="canonical" href="/post/%E5%9B%9E%E8%A1%A8/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 
@@ -144,14 +144,45 @@
 
 
 
-<header class="intro-header" style="background-image: url('/img/%e6%99%ba%e5%ad%90.jpeg')">
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/%e6%99%ba%e5%ad%90.jpeg')
+    }
+</style>
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
-                <div class="site-heading">
-                    <h1>Wenchong Blog </h1>
-                    
-		    <span class="subheading">须知少时凌云志, 曾许人间第一流</span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/mysql" title="Mysql">
+                            Mysql
+                        </a>
+                        
+                        <a class="tag" href="/tags/innodb" title="InnoDB">
+                            InnoDB
+                        </a>
+                        
+                    </div>
+                    <h1>Mysql回表</h1>
+                    <h2 class="subheading">Mysql回表</h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                wenchong
+                             
+                            on 
+                            Monday, September 13, 2021
+                            
+                            
+                            
+                            
+                    </span>
                 </div>
             </div>
         </div>
@@ -160,167 +191,143 @@
 
 
 
-  
-<div class="container">
-    <div class="row">
-        
-        
-   	    <div class="
-            col-lg-8 col-lg-offset-1
-            col-md-8 col-md-offset-1
-            col-sm-12
-            col-xs-12
-            post-container
-        ">
-            
 
-<div class="post-preview">
-    <a href="http://weiwenchong.github.io/post/redis/">
-        <h2 class="post-title">
-            redis基础知识
-        </h2>
-	
-        <h3 class="post-subtitle">
-            《redis设计与实现》阅读笔记
-        </h3>
-	
-        <div class="post-content-preview">
-	
-            写在前面 推荐书籍: 《redis设计与实现》 推荐博客: https://www.cnblogs.com/hunternet/tag/Redis/ (其实就是复述了一遍书,可以用这个博客实现对书的检索功能) 数据类型 数据类型 底层实现 列表
-       
-        </div>
-    </a>
-    <p class="post-meta">
-    
-        Posted bywenchong  Tuesday, September 14, 2021
-        
-        
-    
-    </p>
-
-</div>
-<hr>
-
+<article>
+    <div class="container">
+        <div class="row">
 
             
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#mysql回表">Mysql回表</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                
+                <h2 id="mysql回表">Mysql回表</h2>
+<h3 id="innodb聚集索引和普通索引">InnoDB聚集索引和普通索引</h3>
+<ol>
+<li>聚集索引:InnoDB聚集索引的叶子节点存储行记录,一张表有且只有一个聚集索引,一般为主. 所以主键查询特别快,直接定位行记录.</li>
+<li>普通索引:存储<strong>主键</strong>值.</li>
+</ol>
+<h3 id="回表查询">回表查询</h3>
+<p>举栗:一张表table(id, name, age, sex),id为主键,name为普通索引.
+name索引上存储的值只有主键id,如果select * from table where name= <code>abc</code>;那么数据库执行这条查询就会先从name的索引树上查询到id,<strong>然后再通过id从主键上查询到对应的行,将行返回</strong>,这个过程中查到id后回到主键索引树上再执行一次查询的过程就是回表.而select * from table where id = 1;这个就只用走一次主键树.</p>
+<h3 id="索引覆盖">索引覆盖</h3>
+<p>只要在一个索引树上可以找到Sql所需的所有列数据,无需回表.</p>
+<h3 id="如何实现索引覆盖">如何实现索引覆盖</h3>
+<p>常见的方法,将被查询的字段写到联合索引里.例如要查询select id,name,age from table where name=<code>abc</code>;此时建立一个联合索引idx(name,age),这样就不用回表就可以拿到id,name,age字段.</p>
 
 
+                
 
-       	</div>
-        
-
-<div class="
-    col-lg-3 col-lg-offset-0
-    col-md-3 col-md-offset-0
-    col-sm-12
-    col-xs-12
-    sidebar-container
-">
-    
-    
-    <section>
-        <hr class="hidden-sm hidden-xs">
-        <h5>FEATURED TAGS</h5>
-        <div class="tags">
-            
-            
-               
-            
-               
-            
-               
-            
-               
-            
-               
-            
-               
-            
-               
-            
-               
-            
-               
-            
-               
-            
-        </div>
-    </section>
-    
-
-    
-	
-    <section class="visible-md visible-lg">
-	<hr><h5><a href="/top/about">ABOUT ME</a></h5>
-        <div class="short-about">
-            
-            <a href="/top/about">
-               <img src="/img/ironrabbit.jpeg" alt="avatar" style="cursor: pointer" />
-            </a>
-            
-            
-                <p>Software Developer</p>
-            
-           
-           <ul class="list-inline">
-               
-               <li>
-                   <a href='/tags/redis/index.xml' rel="alternate" type="application/rss+xml" title="Wenchong Blog" >
-                       <span class="fa-stack fa-lg">
-                           <i class="fas fa-circle fa-stack-2x"></i>
-                           <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
-                       </span>
-                   </a>
-               </li>
-               
-               
-               
-               
-               
-               
-               
-               <li>
-                   <a target="_blank" href="https://github.com/weiwenchong">
-                       <span class="fa-stack fa-lg">
-                           <i class="fas fa-circle fa-stack-2x"></i>
-                           <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-                       </span>
-                   </a>
-               </li>
-               
-               
-               
-               
-               
-               
-            
-            
-               
-               
-               
-               
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/kafka/" data-toggle="tooltip" data-placement="top" title="kafka">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/redis/" data-toggle="tooltip" data-placement="top" title="redis基础知识">Next
+                            Post &rarr;</a>
+                    </li>
+                    
                 </ul>
+
+                
+<div id="disqus-comment"></div>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "wenchong" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
             </div>
-    </section>
-	
-    
-    
-    <section>
-        <hr class="hidden-sm hidden-xs">
-        <h5>FRIENDS</h5>
-        <ul class="list-inline">
             
-        </ul>
-    </section>
-    
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
 
-    
-    
-</div>
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                </section>
+                
 
-	</div>
-</div>
-
+                
+                
+                <section>
+                    <hr>
+                    <h5>FRIENDS</h5>
+                    <ul class="list-inline">
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
 
 
 
@@ -332,7 +339,7 @@
                 <ul class="list-inline text-center">
                    
                    <li>
-                       <a href='/tags/redis/index.xml' rel="alternate" type="application/rss+xml" title="Wenchong Blog" >
+                       <a href='' rel="alternate" type="application/rss+xml" title="Wenchong Blog" >
                            <span class="fa-stack fa-lg">
                                <i class="fas fa-circle fa-stack-2x"></i>
                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
