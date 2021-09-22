@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="Mysql回表" />
-    <meta property="og:title" content="Mysql回表" />
-    <meta property="twitter:title" content="Mysql回表" />
+    <meta name="title" content="JavaScript基础(烂尾了没学完)" />
+    <meta property="og:title" content="JavaScript基础(烂尾了没学完)" />
+    <meta property="twitter:title" content="JavaScript基础(烂尾了没学完)" />
     
 
     
@@ -34,9 +34,9 @@
     <meta name="keyword"  content="卫汶冲的博客">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Mysql回表-卫汶冲的博客 | Weiwenchong Blog</title>
+    <title>JavaScript基础(烂尾了没学完)-卫汶冲的博客 | Weiwenchong Blog</title>
 
-    <link rel="canonical" href="/post/%E5%9B%9E%E8%A1%A8/">
+    <link rel="canonical" href="/post/javascript/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 
@@ -159,17 +159,13 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/mysql" title="Mysql">
-                            Mysql
-                        </a>
-                        
-                        <a class="tag" href="/tags/innodb" title="InnoDB">
-                            InnoDB
+                        <a class="tag" href="/tags/html" title="html">
+                            html
                         </a>
                         
                     </div>
-                    <h1>Mysql回表</h1>
-                    <h2 class="subheading">Mysql回表</h2>
+                    <h1>JavaScript基础(烂尾了没学完)</h1>
+                    <h2 class="subheading">简单学习下JavaScript</h2>
                     <span class="meta">
                         
                             Posted by 
@@ -177,7 +173,7 @@
                                 wenchong
                              
                             on 
-                            Monday, September 13, 2021
+                            Sunday, August 15, 2021
                             
                             
                             
@@ -210,26 +206,72 @@
   <ul>
     <li>
       <ul>
-        <li><a href="#mysql回表">Mysql回表</a></li>
+        <li><a href="#javascript基础知识">JavaScript基础知识</a></li>
       </ul>
     </li>
   </ul>
 </nav>
                 
-                <h2 id="mysql回表">Mysql回表</h2>
-<h3 id="innodb聚集索引和普通索引">InnoDB聚集索引和普通索引</h3>
-<ol>
-<li>聚集索引:InnoDB聚集索引的叶子节点存储行记录,一张表有且只有一个聚集索引,一般为主. 所以主键查询特别快,直接定位行记录.</li>
-<li>普通索引:存储<strong>主键</strong>值.</li>
-</ol>
-<h3 id="回表查询">回表查询</h3>
-<p>举栗:一张表table(id, name, age, sex),id为主键,name为普通索引.
-name索引上存储的值只有主键id,如果select * from table where name= <code>abc</code>;那么数据库执行这条查询就会先从name的索引树上查询到id,<strong>然后再通过id从主键上查询到对应的行,将行返回</strong>,这个过程中查到id后回到主键索引树上再执行一次查询的过程就是回表.而select * from table where id = 1;这个就只用走一次主键树.</p>
-<h3 id="索引覆盖">索引覆盖</h3>
-<p>只要在一个索引树上可以找到Sql所需的所有列数据,无需回表.</p>
-<h3 id="如何实现索引覆盖">如何实现索引覆盖</h3>
-<p>常见的方法,将被查询的字段写到联合索引里.例如要查询select id,name,age from table where name=<code>abc</code>;此时建立一个联合索引idx(name,age),这样就不用回表就可以拿到id,name,age字段.</p>
+                <h2 id="javascript基础知识">JavaScript基础知识</h2>
+<h3 id="1使用">1.使用</h3>
+<p>html中,JavaScript代码必须位于<!-- raw HTML omitted --> <!-- raw HTML omitted -->之间</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#ff79c6">p</span> <span style="color:#50fa7b">id</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;demo&#34;</span>&gt;&lt;/<span style="color:#ff79c6">p</span>&gt;
 
+&lt;<span style="color:#ff79c6">script</span>&gt;
+    <span style="color:#8be9fd;font-style:italic">document</span>.getElementById(<span style="color:#f1fa8c">&#34;demo&#34;</span>).innerHTML<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;test&#34;</span>
+&lt;/<span style="color:#ff79c6">script</span>&gt;
+</code></pre></div><h4 id="将javascript函数代码块放在代码块中">将JavaScript函数代码块放在代码块中</h4>
+<p>script标签可以放在<!-- raw HTML omitted -->或者<!-- raw HTML omitted -->中</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#ff79c6">p</span> <span style="color:#50fa7b">id</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;demo&#34;</span>&gt;&lt;/<span style="color:#ff79c6">p</span>&gt;
+
+&lt;<span style="color:#ff79c6">script</span>&gt;
+<span style="color:#8be9fd;font-style:italic">function</span> func() {
+    <span style="color:#8be9fd;font-style:italic">document</span>.getElementById(<span style="color:#f1fa8c">&#34;demo&#34;</span>).innerHTML<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;func&#34;</span>
+}
+&lt;/<span style="color:#ff79c6">script</span>&gt;
+
+&lt;<span style="color:#ff79c6">button</span> <span style="color:#50fa7b">type</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;button&#34;</span> <span style="color:#50fa7b">onclick</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;func()&#34;</span>&gt;&lt;/<span style="color:#ff79c6">button</span>&gt;
+</code></pre></div><h4 id="将javascript放在外部文件中">将JavaScript放在外部文件中</h4>
+<p>使用script标签将js文件导入</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#ff79c6">script</span> <span style="color:#50fa7b">src</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;my.js&#34;</span>&gt;&lt;/<span style="color:#ff79c6">script</span>&gt;
+</code></pre></div><h3 id="2输出">2.输出</h3>
+<h3 id="innerhtml">innerHTML</h3>
+<p>使用document.getElementById(id)方法访问HTML元素
+innerHTML方法可以改变HTML的内容</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-HTML" data-lang="HTML">&lt;<span style="color:#ff79c6">p</span> <span style="color:#50fa7b">id</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;t&#34;</span>&gt;&lt;/<span style="color:#ff79c6">p</span>&gt;
+&lt;<span style="color:#ff79c6">script</span>&gt;
+<span style="color:#8be9fd;font-style:italic">document</span>.getElementById(<span style="color:#f1fa8c">&#34;t&#34;</span>).innerHTML<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;test&#34;</span>
+&lt;/<span style="color:#ff79c6">script</span>&gt;
+</code></pre></div><h3 id="documentwrite">document.write()</h3>
+<p>类似于print</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript"><span style="color:#8be9fd;font-style:italic">document</span>.write(<span style="color:#bd93f9">1</span><span style="color:#ff79c6">+</span><span style="color:#bd93f9">1</span>)
+</code></pre></div><h3 id="windowalert">window.alert()</h3>
+<p>以警示框来显示数据</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript"><span style="color:#8be9fd;font-style:italic">window</span>.alert(<span style="color:#f1fa8c">&#34;test&#34;</span>)
+</code></pre></div><h3 id="consolelog">console.log()</h3>
+<p>在f12调试器的console中打印log</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript">console.log(<span style="color:#bd93f9">1</span><span style="color:#ff79c6">+</span><span style="color:#bd93f9">1</span>)
+</code></pre></div><h3 id="3数据类型">3.数据类型</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript"><span style="color:#8be9fd;font-style:italic">var</span> length <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">1</span>; <span style="color:#6272a4">// 数值,只有一种数值类型,不区分float和int
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">var</span> name <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;w&#34;</span>; <span style="color:#6272a4">// string用单引号双引号都可以
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">var</span> cars <span style="color:#ff79c6">=</span> [<span style="color:#bd93f9">1</span>,<span style="color:#bd93f9">2</span>,<span style="color:#bd93f9">3</span>]; <span style="color:#6272a4">// 数组, 里面可以是任意类型
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">var</span> x <span style="color:#ff79c6">=</span> {firstName<span style="color:#ff79c6">:</span><span style="color:#f1fa8c">&#34;bill&#34;</span>,lastName<span style="color:#ff79c6">:</span><span style="color:#f1fa8c">&#34;gates&#34;</span>}; <span style="color:#6272a4">// duixiang
+</span></code></pre></div><p>js是弱类型语言,可以转换变量的类型,使用typeof来判断变量的类型.</p>
+<h3 id="4函数">4.函数</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript"><span style="color:#8be9fd;font-style:italic">function</span> test(v1, v2) {
+  <span style="color:#ff79c6">return</span> v1<span style="color:#ff79c6">+</span>v2;
+}
+</code></pre></div><p>不指定返回参数,目前看是只支持一个返回参数</p>
+<h3 id="5对象">5.对象</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript"><span style="color:#8be9fd;font-style:italic">var</span> person <span style="color:#ff79c6">=</span> {
+    firstname<span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#34;bill&#34;</span>,
+    lastname<span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#34;gates&#34;</span>,
+    id<span style="color:#ff79c6">:</span> <span style="color:#bd93f9">678</span>,
+    fullname<span style="color:#ff79c6">:</span> <span style="color:#8be9fd;font-style:italic">function</span>() {
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">this</span>.firstname <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34; &#34;</span> <span style="color:#ff79c6">+</span> <span style="color:#ff79c6">this</span>.lastname;
+    }
+};
+</code></pre></div>
 
                 
 
@@ -237,13 +279,13 @@ name索引上存储的值只有主键id,如果select * from table where name= <c
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/post/javascript/" data-toggle="tooltip" data-placement="top" title="JavaScript基础(烂尾了没学完)">&larr;
+                        <a href="/post/kafka/" data-toggle="tooltip" data-placement="top" title="kafka">&larr;
                             Previous Post</a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/post/redis/" data-toggle="tooltip" data-placement="top" title="redis基础知识">Next
+                        <a href="/post/%E5%9B%9E%E8%A1%A8/" data-toggle="tooltip" data-placement="top" title="Mysql回表">Next
                             Post &rarr;</a>
                     </li>
                     

@@ -35,6 +35,15 @@
     </item>
     
     <item>
+      <title>JavaScript基础(烂尾了没学完)</title>
+      <link>http://weiwenchong.github.io/post/javascript/</link>
+      <pubDate>Sun, 15 Aug 2021 20:50:00 +0000</pubDate>
+      
+      <guid>http://weiwenchong.github.io/post/javascript/</guid>
+      <description>JavaScript基础知识 1.使用 html中,JavaScript代码必须位于之间 &amp;lt;p id=&amp;#34;demo&amp;#34;&amp;gt;&amp;lt;/p&amp;gt; &amp;lt;script&amp;gt; document.getElementById(&amp;#34;demo&amp;#34;).innerHTML=&amp;#34;test&amp;#34; &amp;lt;/script&amp;gt; 将JavaScript函数代码块放在代码块中 s</description>
+    </item>
+    
+    <item>
       <title>kafka</title>
       <link>http://weiwenchong.github.io/post/kafka/</link>
       <pubDate>Sun, 15 Aug 2021 20:50:00 +0000</pubDate>
@@ -50,6 +59,15 @@
       
       <guid>http://weiwenchong.github.io/post/net/</guid>
       <description>TCP OSI七层模型 应用层:为应用程序提供网络服务. 表示层:数据格式转换、数据压缩和数据加密. 会话层:建立、断开和维护通信链接. 传输层:为上层协</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://weiwenchong.github.io/post/html/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://weiwenchong.github.io/post/html/</guid>
+      <description></description>
     </item>
     
   </channel>
