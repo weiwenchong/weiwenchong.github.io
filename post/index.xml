@@ -35,6 +35,15 @@
     </item>
     
     <item>
+      <title>go服务不能准确识别docker的CPU数量</title>
+      <link>http://weiwenchong.github.io/post/go%E6%9C%8D%E5%8A%A1%E4%B8%8D%E8%83%BD%E5%87%86%E7%A1%AE%E8%AF%86%E5%88%ABdocker%E7%9A%84cpu%E6%95%B0%E9%87%8F/</link>
+      <pubDate>Fri, 10 Sep 2021 20:50:00 +0000</pubDate>
+      
+      <guid>http://weiwenchong.github.io/post/go%E6%9C%8D%E5%8A%A1%E4%B8%8D%E8%83%BD%E5%87%86%E7%A1%AE%E8%AF%86%E5%88%ABdocker%E7%9A%84cpu%E6%95%B0%E9%87%8F/</guid>
+      <description>写在前面 问题起因 前段时间公司某个中台服务出现了延迟过高的问题,经过调查后发现,该服务的P数量远大于容器限制的4c,大量的CPU时间用来做找G</description>
+    </item>
+    
+    <item>
       <title>JavaScript基础(烂尾了没学完)</title>
       <link>http://weiwenchong.github.io/post/javascript/</link>
       <pubDate>Sun, 15 Aug 2021 20:50:00 +0000</pubDate>
