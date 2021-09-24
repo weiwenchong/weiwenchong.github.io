@@ -6,11 +6,11 @@
     <description>Recent content in Mysql on Wenchong Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 13 Sep 2021 20:50:00 +0000</lastBuildDate><atom:link href="http://weiwenchong.github.io/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 13 Jul 2021 20:50:00 +0000</lastBuildDate><atom:link href="http://weiwenchong.github.io/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Mysql回表</title>
       <link>http://weiwenchong.github.io/post/%E5%9B%9E%E8%A1%A8/</link>
-      <pubDate>Mon, 13 Sep 2021 20:50:00 +0000</pubDate>
+      <pubDate>Tue, 13 Jul 2021 20:50:00 +0000</pubDate>
       
       <guid>http://weiwenchong.github.io/post/%E5%9B%9E%E8%A1%A8/</guid>
       <description>Mysql回表 InnoDB聚集索引和普通索引 聚集索引:InnoDB聚集索引的叶子节点存储行记录,一张表有且只有一个聚集索引,一般为主. 所以主</description>
