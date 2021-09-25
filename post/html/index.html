@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="" />
-    <meta property="og:title" content="" />
-    <meta property="twitter:title" content="" />
+    <meta name="title" content="html基础" />
+    <meta property="og:title" content="html基础" />
+    <meta property="twitter:title" content="html基础" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="卫汶冲的博客">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>卫汶冲的博客 | Weiwenchong Blog</title>
+    <title>html基础-卫汶冲的博客 | Weiwenchong Blog</title>
 
     <link rel="canonical" href="/post/html/">
 
@@ -159,17 +159,21 @@
                 <div class="post-heading">
                     <div class="tags">
                         
+                        <a class="tag" href="/tags/html" title="html">
+                            html
+                        </a>
+                        
                     </div>
-                    <h1></h1>
-                    <h2 class="subheading"></h2>
+                    <h1>html基础</h1>
+                    <h2 class="subheading">简单学习下html</h2>
                     <span class="meta">
                         
                             Posted by 
                             
-                                    Wenchong Blog
+                                wenchong
                              
                             on 
-                            Monday, January 1, 0001
+                            Friday, January 15, 2021
                             
                             
                             
@@ -198,14 +202,73 @@
                 <header>
                     <h2>TOC</h2>
                 </header>
-                <nav id="TableOfContents"></nav>
+                <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#html">html</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
                 
-                
+                <h2 id="html">html</h2>
+<p><strong>超文本标记语言, 是一套标记标签, 使用标记标签来描述网页</strong></p>
+<h3 id="标签">标签</h3>
+<p>使用尖括号包围标签类型, 一般成对出现, 简单实例如下</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#ff79c6">html</span>&gt;
+&lt;<span style="color:#ff79c6">body</span>&gt;
+
+&lt;<span style="color:#ff79c6">h1</span>&gt;第一个标题&lt;/<span style="color:#ff79c6">h1</span>&gt;
+&lt;<span style="color:#ff79c6">p</span>&gt;第一个段落&lt;<span style="color:#ff79c6">p</span>&gt;
+
+&lt;/<span style="color:#ff79c6">body</span>&gt;
+<span style="color:#6272a4">&lt;!-- body之间的内容是用户可见的 --&gt;</span>
+&lt;/<span style="color:#ff79c6">html</span>&gt;
+</code></pre></div><h3 id="基础元素">基础元素</h3>
+<ul>
+<li>
+<p>标题</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#ff79c6">h1</span>&gt; - &lt;<span style="color:#ff79c6">h6</span>&gt; 六级标题, &lt;<span style="color:#ff79c6">hr</span> /&gt; 创建水平线
+</code></pre></div></li>
+<li>
+<p>段落</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#ff79c6">p</span>&gt; &lt;/<span style="color:#ff79c6">p</span>&gt; ,  &lt;<span style="color:#ff79c6">br</span> /&gt;插入空行
+</code></pre></div></li>
+<li>
+<p>图像</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#ff79c6">img</span> <span style="color:#50fa7b">src</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;test.png&#34;</span> <span style="color:#50fa7b">width</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;100&#34;</span> <span style="color:#50fa7b">height</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;120&#34;</span> /&gt;只用一对尖括号, src指定图片
+</code></pre></div></li>
+<li>
+<p>注释</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#6272a4">&lt;!--- zhushi ---&gt;</span>
+</code></pre></div></li>
+</ul>
+<p>###属性</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#ff79c6">h1</span> <span style="color:#50fa7b">align</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;center&#34;</span>&gt; 标题居中对齐
+&lt;<span style="color:#ff79c6">body</span> <span style="color:#50fa7b">bgcolor</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;yellow&#34;</span>&gt; 背景色为黄色
+</code></pre></div><p>属性值放在尖括号内</p>
+<p>###样式</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#ff79c6">body</span> <span style="color:#50fa7b">style</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;background-color:yellow&#34;</span>&gt;
+</code></pre></div><p>样式是一种属性,style代替了原本的bgcolor属性,属性字段会被逐渐淘汰</p>
+<p>###链接</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#ff79c6">a</span> <span style="color:#50fa7b">href</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;www.baidu.com&#34;</span> <span style="color:#50fa7b">target</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;_blank&#34;</span>&gt; baidu &lt;/<span style="color:#ff79c6">a</span>&gt;
+</code></pre></div><p>target字段表示点击后在哪里打开,_blank为新窗口打开</p>
+<p>###图像</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#ff79c6">img</span> <span style="color:#50fa7b">src</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;url&#34;</span> <span style="color:#50fa7b">alt</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;nopic&#34;</span> /&gt;
+</code></pre></div><p>alt是如果找不到图片,就显示alt里的文本.
+img是空标签,只包含属性,没有闭合标签.</p>
+
 
                 
 
                 <hr>
                 <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/javascript/" data-toggle="tooltip" data-placement="top" title="JavaScript基础(烂尾了没学完)">&larr;
+                            Previous Post</a>
+                    </li>
                     
                     
                     <li class="next">
@@ -266,6 +329,10 @@
                         
                         
                         
+                        
+                        <a href="/tags/html" title="html">
+                            html
+                        </a>
                         
                         
                         
