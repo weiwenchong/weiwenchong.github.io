@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="html基础" />
-    <meta property="og:title" content="html基础" />
-    <meta property="twitter:title" content="html基础" />
+    <meta name="title" content="一条sql的执行过程" />
+    <meta property="og:title" content="一条sql的执行过程" />
+    <meta property="twitter:title" content="一条sql的执行过程" />
     
 
     
@@ -34,9 +34,9 @@
     <meta name="keyword"  content="卫汶冲的博客">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>html基础-卫汶冲的博客 | Weiwenchong Blog</title>
+    <title>一条sql的执行过程-卫汶冲的博客 | Weiwenchong Blog</title>
 
-    <link rel="canonical" href="/post/html/">
+    <link rel="canonical" href="/post/%E4%B8%80%E6%9D%A1sql%E7%9A%84%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 
@@ -159,13 +159,13 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/html" title="html">
-                            html
+                        <a class="tag" href="/tags/mysql" title="mysql">
+                            mysql
                         </a>
                         
                     </div>
-                    <h1>html基础</h1>
-                    <h2 class="subheading">简单学习下html</h2>
+                    <h1>一条sql的执行过程</h1>
+                    <h2 class="subheading">mysql基础架构</h2>
                     <span class="meta">
                         
                             Posted by 
@@ -173,7 +173,7 @@
                                 wenchong
                              
                             on 
-                            Friday, January 15, 2021
+                            Friday, September 10, 2021
                             
                             
                             
@@ -206,58 +206,63 @@
   <ul>
     <li>
       <ul>
-        <li><a href="#html">html</a></li>
+        <li><a href="#mysql基础架构">Mysql基础架构</a></li>
+        <li><a href="#语句分析">语句分析</a></li>
+        <li><a href="#流程总结">流程总结</a></li>
       </ul>
     </li>
   </ul>
 </nav>
                 
-                <h2 id="html">html</h2>
-<p><strong>超文本标记语言, 是一套标记标签, 使用标记标签来描述网页</strong></p>
-<h3 id="标签">标签</h3>
-<p>使用尖括号包围标签类型, 一般成对出现, 简单实例如下</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#ff79c6">html</span>&gt;
-&lt;<span style="color:#ff79c6">body</span>&gt;
-
-&lt;<span style="color:#ff79c6">h1</span>&gt;第一个标题&lt;/<span style="color:#ff79c6">h1</span>&gt;
-&lt;<span style="color:#ff79c6">p</span>&gt;第一个段落&lt;<span style="color:#ff79c6">p</span>&gt;
-
-&lt;/<span style="color:#ff79c6">body</span>&gt;
-<span style="color:#6272a4">&lt;!-- body之间的内容是用户可见的 --&gt;</span>
-&lt;/<span style="color:#ff79c6">html</span>&gt;
-</code></pre></div><h3 id="基础元素">基础元素</h3>
+                <h2 id="mysql基础架构">Mysql基础架构</h2>
+<h3 id="概览">概览</h3>
+<p>Mysql主要分为Server层和存储引擎层.</p>
 <ul>
-<li>
-<p>标题</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#ff79c6">h1</span>&gt; - &lt;<span style="color:#ff79c6">h6</span>&gt; 六级标题, &lt;<span style="color:#ff79c6">hr</span> /&gt; 创建水平线
-</code></pre></div></li>
-<li>
-<p>段落</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#ff79c6">p</span>&gt; &lt;/<span style="color:#ff79c6">p</span>&gt; ,  &lt;<span style="color:#ff79c6">br</span> /&gt;插入空行
-</code></pre></div></li>
-<li>
-<p>图像</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#ff79c6">img</span> <span style="color:#50fa7b">src</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;test.png&#34;</span> <span style="color:#50fa7b">width</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;100&#34;</span> <span style="color:#50fa7b">height</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;120&#34;</span> /&gt;只用一对尖括号, src指定图片
-</code></pre></div></li>
-<li>
-<p>注释</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#6272a4">&lt;!--- zhushi ---&gt;</span>
-</code></pre></div></li>
+<li>Server:包括连接器、查询缓存、分析器、优化器、执行器等,所有跨存储引擎的功能都在这一层实现,还有一个通用的日志模块binglog.</li>
+<li>存储引擎:主要负责数据的存储和读取,采用可以替换的插件式架构,支持InnoDB、MyISAM等,InnoDB有自己的日志redolog,从Mysql5.5.5开始被作为默认存储引擎.
+主要组件:</li>
+<li>连接器:身份认证和权限相关.</li>
+<li>查询缓存:执行查询语句的时候会先查询缓存,Mysql8.0后会移除.</li>
+<li>分析器:分析sql语句要干嘛,检查语句是否正确.</li>
+<li>优化器:按照Mysql认为最优的方案去执行.</li>
+<li>执行器:执行语句,从查询引擎拿到数据.</li>
 </ul>
-<p>###属性</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#ff79c6">h1</span> <span style="color:#50fa7b">align</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;center&#34;</span>&gt; 标题居中对齐
-&lt;<span style="color:#ff79c6">body</span> <span style="color:#50fa7b">bgcolor</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;yellow&#34;</span>&gt; 背景色为黄色
-</code></pre></div><p>属性值放在尖括号内</p>
-<p>###样式</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#ff79c6">body</span> <span style="color:#50fa7b">style</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;background-color:yellow&#34;</span>&gt;
-</code></pre></div><p>样式是一种属性,style代替了原本的bgcolor属性,属性字段会被逐渐淘汰</p>
-<p>###链接</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#ff79c6">a</span> <span style="color:#50fa7b">href</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;www.baidu.com&#34;</span> <span style="color:#50fa7b">target</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;_blank&#34;</span>&gt; baidu &lt;/<span style="color:#ff79c6">a</span>&gt;
-</code></pre></div><p>target字段表示点击后在哪里打开,_blank为新窗口打开</p>
-<p>###图像</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#ff79c6">img</span> <span style="color:#50fa7b">src</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;url&#34;</span> <span style="color:#50fa7b">alt</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;nopic&#34;</span> /&gt;
-</code></pre></div><p>alt是如果找不到图片,就显示alt里的文本.
-img是空标签,只包含属性,没有闭合标签.</p>
+<h3 id="组件介绍">组件介绍</h3>
+<ol>
+<li>连接器<br>
+主要负责用户身份认证,拿到的权限配置会决定是否能执行后续的操作,对这个连接后面所有的请求都生效,也就是说如果改了权限,需要重新登陆,不然不会生效.</li>
+<li>查询缓存
+8.0后删除.</li>
+<li>分析器
+词法分析,做什么操作;语法分析,判断是否正确.</li>
+<li>优化器
+以Mysql认为最好的方法去执行.</li>
+<li>执行器
+校验权限,通过的话就去执行这条sql.</li>
+</ol>
+<h2 id="语句分析">语句分析</h2>
+<h3 id="查询语句">查询语句</h3>
+<ol>
+<li>受限校验权限,无权限直接返回.</li>
+<li>8.0前会先查询缓存,如果缓存里有就直接返回,没有就继续执行.</li>
+<li>分析器进行提取关键元素,如动作,表名,查询列等;随后判断是否有语法错误,没问题就进行下一步.</li>
+<li>优化器按自己认为最好的进行优化,确认后开始执行.</li>
+<li>权限校验,没有权限会直接返回(与上面权限校验不同的是,上面的是登陆时的校验,这里是执行查询前的校验,如果此次sql的数据库的连接不是新建的,那就不会有上面的权限校验).</li>
+<li>执行语句,进入innodb引擎查询数据,然后返回.</li>
+</ol>
+<h3 id="更新语句">更新语句</h3>
+<p>语句也会按照上一个查询的流程走,更新流程如下:</p>
+<ol>
+<li>先查询到这条数据.</li>
+<li>拿到这条记录,修改后调用引擎写入这一数据,InnoDB把数据保存在内存中,同时记录redo log,此时redo log进入prepare状态,告诉执行期执行完成,可以提交.</li>
+<li>执行器收到后记录到binlog里,调用引擎,提交redo log.</li>
+<li>更新完成.</li>
+</ol>
+<h2 id="流程总结">流程总结</h2>
+<ol>
+<li>查询: 权限校验-查询缓存-分析器-优化器-权限校验-执行器-引擎.</li>
+<li>更新: 分析器-权限校验-执行器-引擎-redo log prepare-binlog-redo log commit.</li>
+</ol>
 
 
                 
@@ -266,13 +271,13 @@ img是空标签,只包含属性,没有闭合标签.</p>
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/post/javascript/" data-toggle="tooltip" data-placement="top" title="JavaScript基础(烂尾了没学完)">&larr;
+                        <a href="/post/kafka/" data-toggle="tooltip" data-placement="top" title="kafka">&larr;
                             Previous Post</a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/post/net/" data-toggle="tooltip" data-placement="top" title="网络基础知识">Next
+                        <a href="/post/go%E6%9C%8D%E5%8A%A1%E4%B8%8D%E8%83%BD%E5%87%86%E7%A1%AE%E8%AF%86%E5%88%ABdocker%E7%9A%84cpu%E6%95%B0%E9%87%8F/" data-toggle="tooltip" data-placement="top" title="go服务不能准确识别docker的CPU数量">Next
                             Post &rarr;</a>
                     </li>
                     
