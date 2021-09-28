@@ -6,11 +6,11 @@
     <description>Recent content in TiDB on Wenchong Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 07 Sep 2021 20:50:00 +0000</lastBuildDate><atom:link href="http://weiwenchong.github.io/tags/tidb/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 10 Sep 2021 20:50:00 +0000</lastBuildDate><atom:link href="http://weiwenchong.github.io/tags/tidb/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>简单聊聊TiDB</title>
       <link>http://weiwenchong.github.io/post/tidb%E4%B8%8Emysql/</link>
-      <pubDate>Tue, 07 Sep 2021 20:50:00 +0000</pubDate>
+      <pubDate>Fri, 10 Sep 2021 20:50:00 +0000</pubDate>
       
       <guid>http://weiwenchong.github.io/post/tidb%E4%B8%8Emysql/</guid>
       <description>TiDB PingCAP公司开发的开源分布式数据库,兼容Mysql,具备强一致性和高可用性.最主要的优势是支持无限水平扩展,支持ACID事务.结合了</description>
