@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>linux on Wenchong Blog</title>
+    <link>http://weiwenchong.github.io/tags/linux/</link>
+    <description>Recent content in linux on Wenchong Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 07 Sep 2021 20:50:00 +0000</lastBuildDate><atom:link href="http://weiwenchong.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>内核态与用户态</title>
+      <link>http://weiwenchong.github.io/post/%E5%86%85%E6%A0%B8%E6%80%81%E5%92%8C%E7%94%A8%E6%88%B7%E6%80%81/</link>
+      <pubDate>Tue, 07 Sep 2021 20:50:00 +0000</pubDate>
+      
+      <guid>http://weiwenchong.github.io/post/%E5%86%85%E6%A0%B8%E6%80%81%E5%92%8C%E7%94%A8%E6%88%B7%E6%80%81/</guid>
+      <description>内核态和用户态是什么 linux架构图 系统调用将linux分为用户态和内核态,或者说是内核空间和用户空间. 从功能上来讲: 内核态: 控制计算机的硬</description>
+    </item>
+    
+  </channel>
+</rss>

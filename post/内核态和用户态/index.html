@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="redis基础知识" />
-    <meta property="og:title" content="redis基础知识" />
-    <meta property="twitter:title" content="redis基础知识" />
+    <meta name="title" content="内核态与用户态" />
+    <meta property="og:title" content="内核态与用户态" />
+    <meta property="twitter:title" content="内核态与用户态" />
     
 
     
@@ -34,9 +34,9 @@
     <meta name="keyword"  content="卫汶冲的博客">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>redis基础知识-卫汶冲的博客 | Weiwenchong Blog</title>
+    <title>内核态与用户态-卫汶冲的博客 | Weiwenchong Blog</title>
 
-    <link rel="canonical" href="/post/redis/">
+    <link rel="canonical" href="/post/%E5%86%85%E6%A0%B8%E6%80%81%E5%92%8C%E7%94%A8%E6%88%B7%E6%80%81/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 
@@ -159,17 +159,17 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/cache" title="cache">
-                            cache
+                        <a class="tag" href="/tags/linux" title="linux">
+                            linux
                         </a>
                         
-                        <a class="tag" href="/tags/redis" title="redis">
-                            redis
+                        <a class="tag" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F" title="操作系统">
+                            操作系统
                         </a>
                         
                     </div>
-                    <h1>redis基础知识</h1>
-                    <h2 class="subheading">《redis设计与实现》阅读笔记</h2>
+                    <h1>内核态与用户态</h1>
+                    <h2 class="subheading">操作系统基础</h2>
                     <span class="meta">
                         
                             Posted by 
@@ -177,7 +177,7 @@
                                 wenchong
                              
                             on 
-                            Monday, June 14, 2021
+                            Tuesday, September 7, 2021
                             
                             
                             
@@ -210,165 +210,71 @@
   <ul>
     <li>
       <ul>
-        <li><a href="#写在前面">写在前面</a></li>
-        <li><a href="#数据类型">数据类型</a></li>
-        <li><a href="#命令">命令</a></li>
-        <li><a href="#过期时间">过期时间</a></li>
-        <li><a href="#持久化">持久化</a></li>
-        <li><a href="#事件">事件</a></li>
-        <li><a href="#主从复制">主从复制</a></li>
-        <li><a href="#哨兵">哨兵</a></li>
-        <li><a href="#事务">事务</a></li>
+        <li><a href="#内核态和用户态是什么">内核态和用户态是什么</a></li>
+        <li><a href="#区别">区别</a></li>
+        <li><a href="#cpu特权级别">CPU特权级别</a></li>
+        <li><a href="#用户态如何切换到内核态">用户态如何切换到内核态</a></li>
       </ul>
     </li>
   </ul>
 </nav>
                 
-                <h2 id="写在前面">写在前面</h2>
-<p>推荐书籍: 《redis设计与实现》<br>
-推荐博客: <a href="https://www.cnblogs.com/hunternet/tag/Redis/">https://www.cnblogs.com/hunternet/tag/Redis/</a> (其实就是复述了一遍书,可以用这个博客实现对书的检索功能)</p>
-<h2 id="数据类型">数据类型</h2>
+                <h2 id="内核态和用户态是什么">内核态和用户态是什么</h2>
+<p>linux架构图<br>
+
+  <img src="linux%e6%9e%b6%e6%9e%84.jpg" alt="">
+
+
+系统调用将linux分为用户态和内核态,或者说是内核空间和用户空间.<br>
+从功能上来讲:</p>
+<ul>
+<li>内核态: 控制计算机的硬件资源,如协调CPU资源,分配内存等.</li>
+<li>用户态: 提供应用程序运行的空间.</li>
+<li>系统调用: 为了使应用程序能访问到内核管理的资源,如CPU,内存,I/O等,内核必须提供一组通用的访问接口,称为系统调用.</li>
+<li>库函数: 屏蔽底层的实现细节,对系统调用进行封装.</li>
+<li>shell: 把内核包起来的外壳,做了和系统调用类似的事情,只是提供一个终端给用户来做交互,符合语法的文本叫shell脚本.</li>
+</ul>
+<h2 id="区别">区别</h2>
 <table>
 <thead>
 <tr>
-<th>数据类型</th>
-<th>底层实现</th>
+<th></th>
+<th>用户态</th>
+<th>内核态</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>列表</td>
-<td>(linkedlist ziplist)/quicklist</td>
+<td>可访问的资源</td>
+<td>只能访问受限的内存,不能访问外围设备,CPU能被抢占</td>
+<td>CPU可以访问内存的所有数据,所有外围设备(硬盘,网卡),可以占用CPU,不能被抢占</td>
 </tr>
 <tr>
-<td>哈希</td>
-<td>ziplist hashtable</td>
+<td>运行的内容</td>
+<td>运行用户程序</td>
+<td>运行操作系统,操作硬件</td>
 </tr>
 <tr>
-<td>set</td>
-<td>intset hashtable</td>
+<td>特权级别</td>
+<td>R3</td>
+<td>R0</td>
 </tr>
 <tr>
-<td>sortset</td>
-<td>ziplist skiplist&amp;hashtable</td>
+<td>转换机制</td>
+<td>转换到内核态通过中断、异常、陷入(系统调用)</td>
+<td>转换到用户态设置状态字PSw</td>
 </tr>
 </tbody>
 </table>
-<p>其中quicklist是linkedlist和ziplist的结合体,每个节点是一个ziplist,节约指针所占的空间和内存碎片化问题,在redis3.2版本以后,列表的实现方式使用quicklist代替了原本的linkedlist和ziplist.</p>
-<ol>
-<li>列表<br>
-redis3.2之前,数据少使用ziplist,数据多使用linkedlist,3.2后全部使用quicklist.</li>
-<li>哈希
-数据少使用ziplist,数据多使用hashtable.</li>
-<li>set
-数据少并且是int使用intset,数据多使用hashtable.</li>
-<li>sortset
-数据少使用ziplist,数据多使用skiplist&amp;hashtable.</li>
-</ol>
-<p><em>todo 增加数据量划分</em></p>
-<p>数据结构图
-
-  <img src="http://weiwenchong.github.io//img/redis%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84.png" alt="">
-
-</p>
-<h2 id="命令">命令</h2>
-<p>命令太多了,就不写了,会用就行 ^_^</p>
-<h2 id="过期时间">过期时间</h2>
-<p>很多命令设置时没有过期时间,可以用<strong>expire</strong>来追加设置.</p>
+<h2 id="cpu特权级别">CPU特权级别</h2>
+<p>intel x86的CPU分为四个级别,0~3,0最高,3最低,linux只用了两个,0和3,内核态的程序有r0权限,用户态的只有r3权限.<br>
+从特权的角度来讲,r3权限就是用户态,r0就是内核态.</p>
+<h2 id="用户态如何切换到内核态">用户态如何切换到内核态</h2>
 <ul>
-<li>使用expires字典保存过期时间.</li>
-<li>最多到毫秒.</li>
-<li>使用惰性删除和定期删除两种策略,定期删除是每次随机取一些键进行检查,惰性删除是用到这个键时才会去删除这个键.</li>
+<li>系统调用,也叫陷入,通过系统调用申请系统服务,例如fork()新建一个进程,就会进入内核态.</li>
+<li>异常.发生了某些不可预知的异常,会触发到处理该异常的内核相关程序中,进入内核态.</li>
+<li>外围设备中断.外围设备完成用户请求的操作后,会向CPU发出中断信号,如果CPU之前在用户态,那此时会切换到内核态.</li>
 </ul>
-<h2 id="持久化">持久化</h2>
-<h3 id="rdb持久化">RDB持久化</h3>
-<ul>
-<li>将数据库状态保存为压缩的二进制文件.</li>
-<li>RDB持久化的优先级低于AOF持久化,优先使用AOF来进行还原,只有在AOF关闭时,才会使用RDB持久化.</li>
-<li>SAVE命令,前台存储,会阻塞所有的redis命令,进行保存.</li>
-<li>BGSAVE是后台保存,fork一个线程出来,只有fork的时候阻塞主线程,子线程执行SAVE的过程不影响主线程继续执行命令.</li>
-<li>redis自带SAVE自动保存,满足条件之一就可以：900秒一次修改,300s十次修改等. 这个条件可以通过修改redis的conf文件来更改.</li>
-</ul>
-<h3 id="aof持久化">AOF持久化</h3>
-<ul>
-<li>AOF是将写redis的命令记录下来,类似于mysql的binlog,而RDB是将redis整个的键值对记录下来.</li>
-<li>AOF记录的格式是纯文本格式,将redis写命令的<strong>请求</strong>记录下来.</li>
-<li>使用AOF恢复redis时,会使用一个没有网络连接的伪客户端来向redis服务端发送AOF记录里的写入请求.</li>
-</ul>
-<h3 id="aof重写">AOF重写</h3>
-<ul>
-<li>当redis写入命令过多时,必然导致AOF文件的膨胀,AOF重写是将记录里一个键的多条写入命令变为一条.</li>
-<li>将多条命令变为一条的过程是,直接读取库里的键值,写入AOF中.</li>
-<li>重写过程在子进程中进行,会复制一份AOF文件来进行重写,同时在父进程中将写入的命令同时写入到AOF缓冲区和AOF重写缓冲区,在子进程完成重写后,会在父进程中阻塞其他命令,将AOF重写缓冲区的数据写入到新AOF文件中,再用新的AOF替换老的AOF.</li>
-</ul>
-<h2 id="事件">事件</h2>
-<h3 id="时间事件">时间事件</h3>
-<ul>
-<li>redis将所有的时间事件放在一个无序链表中,链表是越晚插入的在后面,不会根据执行时间去排序,所以每次时间执行器运行时会遍历整个链表,将运行时间在当前时间之前的执行.</li>
-<li>时间事件执行器每隔100ms执行一次,遇到冲突的文件事件会优先执行文件事件.
-（这个100ms可以修改）</li>
-<li>时间事件并不能做到精准到毫秒去运行.</li>
-</ul>
-<h2 id="主从复制">主从复制</h2>
-<h3 id="旧版复制功能sync">旧版复制功能：SYNC</h3>
-<ol>
-<li>从服务端发送SYNC命令.</li>
-<li>主服务器执行BGSAVE,在后台生成RDB文件,并在缓冲区记录生成RDB文件期间服务器的写操作.</li>
-<li>主服务器将RDB文件发送给从服务器,从服务器载入RDB,更新到主服务器开始执行RDB操作时的状态.</li>
-<li>主服务器将缓冲区的写命令发给从服务器,更新到主服务器当前状态.</li>
-</ol>
-<h3 id="新版复制功能psync">新版复制功能：PSYNC</h3>
-<p>分为完整重同步和部分重同步</p>
-<ol>
-<li>完整重同步等同于旧版复制功能,用于初次复制.</li>
-<li>部分重同步用于从服务器断线重连,如果条件允许,主服务器将断开期间的写命令发送给从服务器去执行一遍,完成同步.</li>
-</ol>
-<p><strong>redis同步的策略是优先执行增量同步</strong></p>
-<h3 id="增量复制偏移量">增量复制偏移量</h3>
-<ol>
-<li>redis的主从服务器都会保存复制偏移量,即主服务器同步给从服务器的数据量.</li>
-<li>偏移量可以用于校对主从服务同步状态,如果某次同步从服务器丢失了同步信息,下次请求同步会从丢失的偏移量之前开始.</li>
-<li>redis使用复制积压缓冲区来记录已发送的同步命令,当复制偏移量不一致时,主服务器先从缓冲区去找,找到了就将从服务器偏移量后的同步命令全部给从服务器.</li>
-<li>如果丢失命令已经不在缓冲区里,就执行全量重同步.</li>
-<li>复制积压缓冲区使用<strong>固定长度先进先出队列</strong>实现.</li>
-</ol>
-<h2 id="哨兵">哨兵</h2>
-<ul>
-<li>一个或多个sentinel实例组成sentinel系统可以监视任意多个redis主服务器以及这些主服务器下属的从服务器,当一个主服务器下线,会将一个从服务器晋升为主服务器.</li>
-<li>当下线的原主服务器重新上线时,sentinel会将其置为从服务器.</li>
-<li>sentinel是由普通的redis服务器转变状态而来,换言之,sentinel是一个redis服务器.</li>
-<li>检测是否在线是sentinel每秒一次向所有实例（主从服务器,其他sentinel）发送ping命令.</li>
-<li>sentinel会每十秒一次向主服务器发送INFO命令,通过INFO的回复来获取主服务器的信息.</li>
-</ul>
-<h2 id="事务">事务</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">MULTI  
-<span style="color:#8be9fd;font-style:italic">set</span> ...  
-EXEC
-</code></pre></div><h3 id="watch命令">WATCH命令</h3>
-<p>是一个乐观锁,监视数据库键,当一个事务改变这些键时,服务器会直接拒绝</p>
-<ol>
-<li>
-<p>原子性<br>
-在批量命令入队时,如果服务器发现有个命令错误,则一条命令也不会执行.
-而在命令全部入队后,如果执行命令出错,依然会执行完全部命令,不支持事务回滚.</p>
-</li>
-<li>
-<p>一致性<br>
-一致是指数据符合数据库本身的定义和要求,没有非法和无效的数据.<br>
-入队错误: redis2.6.5之前的版本,即使命令在入队过程中发生了错误,事务提交后依然会执行,只是不执行出错的命令(如get 后无参数).<br>
-在2.6.5之后的版本,如果入队时命令出错,会直接不执行事务中的所有命令.<br>
-执行错误: 如get 一个 list, redis会不执行这条命令.<br>
-服务器停机: 无论是否开启持久化都会保持一致性.</p>
-</li>
-<li>
-<p>隔离性<br>
-redis使用单线程运行, 事务都是串行, 所以可以保证隔离性.</p>
-</li>
-<li>
-<p>持久性<br>
-仅在AOF持久化开启, 模式为always时, 即程序在执行完命令后会立即执行sync, 可以实现AOF持久化.</p>
-</li>
-</ol>
 
 
                 
@@ -377,13 +283,13 @@ redis使用单线程运行, 事务都是串行, 所以可以保证隔离性.</p>
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/post/net/" data-toggle="tooltip" data-placement="top" title="网络基础知识">&larr;
+                        <a href="/post/tidb%E4%B8%8Emysql/" data-toggle="tooltip" data-placement="top" title="简单聊聊TiDB">&larr;
                             Previous Post</a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/post/%E5%9B%9E%E8%A1%A8/" data-toggle="tooltip" data-placement="top" title="Mysql回表">Next
+                        <a href="/post/%E4%B8%80%E6%9D%A1sql%E7%9A%84%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B/" data-toggle="tooltip" data-placement="top" title="一条sql的执行过程">Next
                             Post &rarr;</a>
                     </li>
                     

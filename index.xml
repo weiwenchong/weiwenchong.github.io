@@ -35,6 +35,24 @@
     </item>
     
     <item>
+      <title>内核态与用户态</title>
+      <link>http://weiwenchong.github.io/post/%E5%86%85%E6%A0%B8%E6%80%81%E5%92%8C%E7%94%A8%E6%88%B7%E6%80%81/</link>
+      <pubDate>Tue, 07 Sep 2021 20:50:00 +0000</pubDate>
+      
+      <guid>http://weiwenchong.github.io/post/%E5%86%85%E6%A0%B8%E6%80%81%E5%92%8C%E7%94%A8%E6%88%B7%E6%80%81/</guid>
+      <description>内核态和用户态是什么 linux架构图 系统调用将linux分为用户态和内核态,或者说是内核空间和用户空间. 从功能上来讲: 内核态: 控制计算机的硬</description>
+    </item>
+    
+    <item>
+      <title>简单聊聊TiDB</title>
+      <link>http://weiwenchong.github.io/post/tidb%E4%B8%8Emysql/</link>
+      <pubDate>Tue, 07 Sep 2021 20:50:00 +0000</pubDate>
+      
+      <guid>http://weiwenchong.github.io/post/tidb%E4%B8%8Emysql/</guid>
+      <description>TiDB PingCAP公司开发的开源分布式数据库,兼容Mysql,具备强一致性和高可用性.最主要的优势是支持无限水平扩展,支持ACID事务.结合了</description>
+    </item>
+    
+    <item>
       <title>kafka</title>
       <link>http://weiwenchong.github.io/post/kafka/</link>
       <pubDate>Sun, 15 Aug 2021 20:50:00 +0000</pubDate>
